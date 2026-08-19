@@ -74,10 +74,10 @@ function PricingPage() {
     enabled: !!property && preview.from < preview.to,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("quote_stay", {
-        p_property_id: property!.id,
-        p_check_in: preview.from,
-        p_check_out: preview.to,
-        p_guests: preview.guests,
+        _property_id: property!.id,
+        _check_in: preview.from,
+        _check_out: preview.to,
+        _guests: preview.guests,
       });
       if (error) throw error;
       return data as unknown as {
@@ -100,7 +100,7 @@ function PricingPage() {
         start_date: row.start_date || null,
         end_date: row.end_date || null,
         days_of_week: row.days_of_week?.length ? row.days_of_week : null,
-        min_nights: row.min_nights ?? null,
+        min_nights: Number(row.min_nights ?? 1),
         priority: Number(row.priority ?? 10),
         is_active: row.is_active ?? true,
       };
