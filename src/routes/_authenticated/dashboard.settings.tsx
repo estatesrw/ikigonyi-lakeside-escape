@@ -49,7 +49,10 @@ function SettingsPage() {
 
   const save = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("properties").update(form).eq("id", property!.id);
+      const { error } = await supabase
+        .from("properties")
+        .update(form as never)
+        .eq("id", property!.id);
       if (error) throw error;
     },
     onSuccess: () => {
