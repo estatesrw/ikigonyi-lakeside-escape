@@ -22,10 +22,14 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBookingsRouteImport } from './routes/_authenticated/dashboard.bookings'
 import { Route as AuthenticatedDashboardCalendarRouteImport } from './routes/_authenticated/dashboard.calendar'
+import { Route as AuthenticatedDashboardChannelsRouteImport } from './routes/_authenticated/dashboard.channels'
+import { Route as AuthenticatedDashboardContentRouteImport } from './routes/_authenticated/dashboard.content'
 import { Route as AuthenticatedDashboardEventsRouteImport } from './routes/_authenticated/dashboard.events'
 import { Route as AuthenticatedDashboardGuestsRouteImport } from './routes/_authenticated/dashboard.guests'
 import { Route as AuthenticatedDashboardInquiriesRouteImport } from './routes/_authenticated/dashboard.inquiries'
 import { Route as AuthenticatedDashboardMessagesRouteImport } from './routes/_authenticated/dashboard.messages'
+import { Route as AuthenticatedDashboardPricingRouteImport } from './routes/_authenticated/dashboard.pricing'
+import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -94,6 +98,18 @@ const AuthenticatedDashboardCalendarRoute =
     path: '/calendar',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardChannelsRoute =
+  AuthenticatedDashboardChannelsRouteImport.update({
+    id: '/channels',
+    path: '/channels',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardContentRoute =
+  AuthenticatedDashboardContentRouteImport.update({
+    id: '/content',
+    path: '/content',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardEventsRoute =
   AuthenticatedDashboardEventsRouteImport.update({
     id: '/events',
@@ -118,6 +134,18 @@ const AuthenticatedDashboardMessagesRoute =
     path: '/messages',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardPricingRoute =
+  AuthenticatedDashboardPricingRouteImport.update({
+    id: '/pricing',
+    path: '/pricing',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardReviewsRoute =
+  AuthenticatedDashboardReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,10 +159,14 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
+  '/dashboard/channels': typeof AuthenticatedDashboardChannelsRoute
+  '/dashboard/content': typeof AuthenticatedDashboardContentRoute
   '/dashboard/events': typeof AuthenticatedDashboardEventsRoute
   '/dashboard/guests': typeof AuthenticatedDashboardGuestsRoute
   '/dashboard/inquiries': typeof AuthenticatedDashboardInquiriesRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
+  '/dashboard/pricing': typeof AuthenticatedDashboardPricingRoute
+  '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -148,10 +180,14 @@ export interface FileRoutesByTo {
   '/stay': typeof StayRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
+  '/dashboard/channels': typeof AuthenticatedDashboardChannelsRoute
+  '/dashboard/content': typeof AuthenticatedDashboardContentRoute
   '/dashboard/events': typeof AuthenticatedDashboardEventsRoute
   '/dashboard/guests': typeof AuthenticatedDashboardGuestsRoute
   '/dashboard/inquiries': typeof AuthenticatedDashboardInquiriesRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
+  '/dashboard/pricing': typeof AuthenticatedDashboardPricingRoute
+  '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -168,10 +204,14 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/_authenticated/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
+  '/_authenticated/dashboard/channels': typeof AuthenticatedDashboardChannelsRoute
+  '/_authenticated/dashboard/content': typeof AuthenticatedDashboardContentRoute
   '/_authenticated/dashboard/events': typeof AuthenticatedDashboardEventsRoute
   '/_authenticated/dashboard/guests': typeof AuthenticatedDashboardGuestsRoute
   '/_authenticated/dashboard/inquiries': typeof AuthenticatedDashboardInquiriesRoute
   '/_authenticated/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
+  '/_authenticated/dashboard/pricing': typeof AuthenticatedDashboardPricingRoute
+  '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -188,10 +228,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
+    | '/dashboard/channels'
+    | '/dashboard/content'
     | '/dashboard/events'
     | '/dashboard/guests'
     | '/dashboard/inquiries'
     | '/dashboard/messages'
+    | '/dashboard/pricing'
+    | '/dashboard/reviews'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -205,10 +249,14 @@ export interface FileRouteTypes {
     | '/stay'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
+    | '/dashboard/channels'
+    | '/dashboard/content'
     | '/dashboard/events'
     | '/dashboard/guests'
     | '/dashboard/inquiries'
     | '/dashboard/messages'
+    | '/dashboard/pricing'
+    | '/dashboard/reviews'
     | '/dashboard'
   id:
     | '__root__'
@@ -224,10 +272,14 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/dashboard/bookings'
     | '/_authenticated/dashboard/calendar'
+    | '/_authenticated/dashboard/channels'
+    | '/_authenticated/dashboard/content'
     | '/_authenticated/dashboard/events'
     | '/_authenticated/dashboard/guests'
     | '/_authenticated/dashboard/inquiries'
     | '/_authenticated/dashboard/messages'
+    | '/_authenticated/dashboard/pricing'
+    | '/_authenticated/dashboard/reviews'
     | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -336,6 +388,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardCalendarRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/channels': {
+      id: '/_authenticated/dashboard/channels'
+      path: '/channels'
+      fullPath: '/dashboard/channels'
+      preLoaderRoute: typeof AuthenticatedDashboardChannelsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/content': {
+      id: '/_authenticated/dashboard/content'
+      path: '/content'
+      fullPath: '/dashboard/content'
+      preLoaderRoute: typeof AuthenticatedDashboardContentRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/events': {
       id: '/_authenticated/dashboard/events'
       path: '/events'
@@ -364,16 +430,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardMessagesRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/pricing': {
+      id: '/_authenticated/dashboard/pricing'
+      path: '/pricing'
+      fullPath: '/dashboard/pricing'
+      preLoaderRoute: typeof AuthenticatedDashboardPricingRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/reviews': {
+      id: '/_authenticated/dashboard/reviews'
+      path: '/reviews'
+      fullPath: '/dashboard/reviews'
+      preLoaderRoute: typeof AuthenticatedDashboardReviewsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardBookingsRoute: typeof AuthenticatedDashboardBookingsRoute
   AuthenticatedDashboardCalendarRoute: typeof AuthenticatedDashboardCalendarRoute
+  AuthenticatedDashboardChannelsRoute: typeof AuthenticatedDashboardChannelsRoute
+  AuthenticatedDashboardContentRoute: typeof AuthenticatedDashboardContentRoute
   AuthenticatedDashboardEventsRoute: typeof AuthenticatedDashboardEventsRoute
   AuthenticatedDashboardGuestsRoute: typeof AuthenticatedDashboardGuestsRoute
   AuthenticatedDashboardInquiriesRoute: typeof AuthenticatedDashboardInquiriesRoute
   AuthenticatedDashboardMessagesRoute: typeof AuthenticatedDashboardMessagesRoute
+  AuthenticatedDashboardPricingRoute: typeof AuthenticatedDashboardPricingRoute
+  AuthenticatedDashboardReviewsRoute: typeof AuthenticatedDashboardReviewsRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
@@ -381,10 +465,14 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardBookingsRoute: AuthenticatedDashboardBookingsRoute,
     AuthenticatedDashboardCalendarRoute: AuthenticatedDashboardCalendarRoute,
+    AuthenticatedDashboardChannelsRoute: AuthenticatedDashboardChannelsRoute,
+    AuthenticatedDashboardContentRoute: AuthenticatedDashboardContentRoute,
     AuthenticatedDashboardEventsRoute: AuthenticatedDashboardEventsRoute,
     AuthenticatedDashboardGuestsRoute: AuthenticatedDashboardGuestsRoute,
     AuthenticatedDashboardInquiriesRoute: AuthenticatedDashboardInquiriesRoute,
     AuthenticatedDashboardMessagesRoute: AuthenticatedDashboardMessagesRoute,
+    AuthenticatedDashboardPricingRoute: AuthenticatedDashboardPricingRoute,
+    AuthenticatedDashboardReviewsRoute: AuthenticatedDashboardReviewsRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   }
 
