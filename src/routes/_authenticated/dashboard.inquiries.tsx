@@ -89,6 +89,54 @@ function InquiriesPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const checkQuote = useMutation({
+    mutationFn: async () => {
+      if (!convert || !property) throw new Error("Missing property");
+      return fetchQuote(property.id, convert.checkIn, convert.checkOut, convert.guests);
+    },
+    onSuccess: setQuote,
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const convertMutation = useMutation({
+    mutationFn: async () => {
+      if (!convert) throw new Error("No inquiry");
+      const { data, error } = await supabase.rpc("convert_inquiry_to_booking", {
+        _inquiry_id: convert.inquiry.id,
+        _check_in: convert.checkIn,
+        _check_out: convert.checkOut,
+        _guests: convert.guests,
+        _status: convert.status,
+      });
+      if (error) throw error;
+      const result = data as unknown as { error?: string; reference: string };
+      if (result?.error) throw new Error(result.error);
+      return result;
+    },
+    onSuccess: (r) => {
+      toast.success(`Booking ${r.reference} created`);
+      setConvert(null);
+      setQuote(null);
+      setActive(null);
+      qc.invalidateQueries({ queryKey: ["inquiries"] });
+      qc.invalidateQueries({ queryKey: ["bookings"] });
+      qc.invalidateQueries({ queryKey: ["calendar"] });
+      qc.invalidateQueries({ queryKey: ["overview"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const startConvert = (i: Inquiry) => {
+    setQuote(null);
+    setConvert({
+      inquiry: i,
+      checkIn: i.check_in ?? todayISO(7),
+      checkOut: i.check_out ?? todayISO(9),
+      guests: i.guests_count ?? 2,
+      status: "confirmed",
+    });
+  };
+
   if (isLoading) return <Loading />;
   const rows = data ?? [];
 
