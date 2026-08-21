@@ -16,6 +16,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { fetchQuote, type Quote } from "@/components/site/BookingSearch";
+import { todayISO } from "@/lib/property";
+import { useAccess } from "@/lib/dashboard";
 import { Fld, Picker } from "./dashboard.bookings";
 
 export const Route = createFileRoute("/_authenticated/dashboard/inquiries")({
@@ -43,7 +47,16 @@ type Inquiry = {
 function InquiriesPage() {
   const { data: property } = usePropertyId();
   const qc = useQueryClient();
+  const access = useAccess();
   const [active, setActive] = useState<Inquiry | null>(null);
+  const [convert, setConvert] = useState<{
+    inquiry: Inquiry;
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    status: "pending" | "confirmed";
+  } | null>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["inquiries", property?.id],
@@ -75,6 +88,54 @@ function InquiriesPage() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  const checkQuote = useMutation({
+    mutationFn: async () => {
+      if (!convert || !property) throw new Error("Missing property");
+      return fetchQuote(property.id, convert.checkIn, convert.checkOut, convert.guests);
+    },
+    onSuccess: setQuote,
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const convertMutation = useMutation({
+    mutationFn: async () => {
+      if (!convert) throw new Error("No inquiry");
+      const { data, error } = await supabase.rpc("convert_inquiry_to_booking", {
+        _inquiry_id: convert.inquiry.id,
+        _check_in: convert.checkIn,
+        _check_out: convert.checkOut,
+        _guests: convert.guests,
+        _status: convert.status,
+      });
+      if (error) throw error;
+      const result = data as unknown as { error?: string; reference: string };
+      if (result?.error) throw new Error(result.error);
+      return result;
+    },
+    onSuccess: (r) => {
+      toast.success(`Booking ${r.reference} created`);
+      setConvert(null);
+      setQuote(null);
+      setActive(null);
+      qc.invalidateQueries({ queryKey: ["inquiries"] });
+      qc.invalidateQueries({ queryKey: ["bookings"] });
+      qc.invalidateQueries({ queryKey: ["calendar"] });
+      qc.invalidateQueries({ queryKey: ["overview"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const startConvert = (i: Inquiry) => {
+    setQuote(null);
+    setConvert({
+      inquiry: i,
+      checkIn: i.check_in ?? todayISO(7),
+      checkOut: i.check_out ?? todayISO(9),
+      guests: i.guests_count ?? 2,
+      status: "confirmed",
+    });
+  };
 
   if (isLoading) return <Loading />;
   const rows = data ?? [];
@@ -168,9 +229,131 @@ function InquiriesPage() {
                   onChange={(e) => setActive({ ...active, notes: e.target.value })}
                 />
               </Fld>
-              <DialogFooter>
+              <DialogFooter className="gap-2 sm:justify-between">
+                {access.canManage ? (
+                  <Button type="button" variant="outline" onClick={() => startConvert(active)}>
+                    Convert to booking
+                  </Button>
+                ) : (
+                  <span />
+                )}
                 <Button type="submit" disabled={update.isPending}>
                   Save
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={!!convert}
+        onOpenChange={(o) => {
+          if (!o) {
+            setConvert(null);
+            setQuote(null);
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Convert “{convert?.inquiry.name}” to a booking</DialogTitle>
+          </DialogHeader>
+          {convert && (
+            <form
+              className="space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                convertMutation.mutate();
+              }}
+            >
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Fld label="Check-in">
+                  <Input
+                    type="date"
+                    required
+                    value={convert.checkIn}
+                    onChange={(e) => {
+                      setConvert({ ...convert, checkIn: e.target.value });
+                      setQuote(null);
+                    }}
+                  />
+                </Fld>
+                <Fld label="Check-out">
+                  <Input
+                    type="date"
+                    required
+                    min={convert.checkIn}
+                    value={convert.checkOut}
+                    onChange={(e) => {
+                      setConvert({ ...convert, checkOut: e.target.value });
+                      setQuote(null);
+                    }}
+                  />
+                </Fld>
+                <Fld label="Guests">
+                  <Input
+                    type="number"
+                    min={1}
+                    value={convert.guests}
+                    onChange={(e) => {
+                      setConvert({ ...convert, guests: Number(e.target.value) });
+                      setQuote(null);
+                    }}
+                  />
+                </Fld>
+              </div>
+
+              <Fld label="Booking status">
+                <Picker
+                  value={convert.status}
+                  options={["pending", "confirmed"] as const}
+                  onChange={(v) =>
+                    setConvert({ ...convert, status: v as "pending" | "confirmed" })
+                  }
+                />
+              </Fld>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                disabled={checkQuote.isPending}
+                onClick={() => checkQuote.mutate()}
+              >
+                Check availability & price
+              </Button>
+
+              {quote && !quote.error && (
+                <div className="rounded-lg bg-muted/60 p-3 text-sm">
+                  <p>
+                    {quote.nights} nights ·{" "}
+                    {formatMoney(Number(quote.avg_nightly), quote.currency)} avg / night
+                  </p>
+                  <p className="mt-1 font-medium">
+                    Total {formatMoney(Number(quote.total), quote.currency)}
+                  </p>
+                  <p
+                    className={
+                      quote.available ? "mt-2 text-primary" : "mt-2 text-destructive"
+                    }
+                  >
+                    {quote.available
+                      ? "Dates are free — confirming will block the calendar."
+                      : "These dates overlap a confirmed booking or blocked period."}
+                  </p>
+                </div>
+              )}
+
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  disabled={
+                    convertMutation.isPending ||
+                    (convert.status === "confirmed" && quote != null && !quote.available)
+                  }
+                >
+                  Create booking
                 </Button>
               </DialogFooter>
             </form>
