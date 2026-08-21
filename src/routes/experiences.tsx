@@ -16,10 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useProperty } from "@/lib/property";
-import terraceImage from "@/assets/terrace.jpg";
-import livingImage from "@/assets/living.jpg";
-import bedroomImage from "@/assets/bedroom.jpg";
-import heroImage from "@/assets/hero-lake.jpg";
 
 const DESCRIPTION =
   "Weekend getaways, lakeside BBQs, private gatherings, corporate retreats and lake experiences at Ikigonyi Round House on Lake Muhazi, Rwanda.";
@@ -78,7 +74,7 @@ function ExperiencesPage() {
     onError: (e: Error) => toast.error(e.message || "Something went wrong."),
   });
 
-  const images = [terraceImage, livingImage, heroImage, bedroomImage, terraceImage];
+  const images = [photos.terrace, photos.dining, photos.living, photos.livingStairs, photos.lake];
 
   return (
     <SiteLayout>

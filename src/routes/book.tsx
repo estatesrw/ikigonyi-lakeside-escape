@@ -12,7 +12,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchQuote, type Quote } from "@/components/site/BookingSearch";
 import { formatMoney, todayISO, useProperty } from "@/lib/property";
-import terraceImage from "@/assets/terrace.jpg";
 
 const DESCRIPTION =
   "Check availability and request your stay at Ikigonyi Round House, a private lakeside retreat on Lake Muhazi, Rwanda.";
@@ -280,7 +279,7 @@ function BookPage() {
 
         <aside className="h-fit overflow-hidden rounded-3xl border border-border bg-card md:sticky md:top-28">
           <img
-            src={terraceImage}
+            src={photos.terrace}
             alt="Terrace at Ikigonyi Round House"
             loading="lazy"
             width={1280}

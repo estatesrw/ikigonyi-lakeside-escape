@@ -6,10 +6,7 @@ import { BookingSearch } from "@/components/site/BookingSearch";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/lib/property";
-import heroImage from "@/assets/hero-lake.jpg";
-import livingImage from "@/assets/living.jpg";
-import bedroomImage from "@/assets/bedroom.jpg";
-import terraceImage from "@/assets/terrace.jpg";
+import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
   "Ikigonyi Round House is a private lakeside retreat on Lake Muhazi, Rwanda. Four bedrooms, up to twelve guests — a weekend escape from Kigali for families, friends and private gatherings.";
@@ -95,14 +92,14 @@ function HomePage() {
     },
   });
 
-  const experienceImages = [terraceImage, livingImage, bedroomImage, heroImage, terraceImage];
+  const experienceImages = [photos.terrace, photos.dining, photos.living, photos.livingStairs, photos.lake];
 
   return (
     <SiteLayout overlayHeader>
       {/* HERO */}
       <section className="relative flex min-h-[92svh] items-end overflow-hidden">
         <img
-          src={heroImage}
+          src={photos.exterior}
           alt="Ikigonyi Round House at sunrise on the shore of Lake Muhazi"
           width={1920}
           height={1088}
@@ -161,7 +158,7 @@ function HomePage() {
           </Button>
         </div>
         <img
-          src={livingImage}
+          src={photos.living}
           alt="Warm interior living space with lake views"
           loading="lazy"
           width={1280}
@@ -187,7 +184,7 @@ function HomePage() {
 
           <div className="mt-12 grid gap-8 lg:grid-cols-[1.3fr_1fr]">
             <img
-              src={bedroomImage}
+              src={photos.bedroomKing}
               alt="Bedroom opening onto the lake"
               loading="lazy"
               width={1280}
@@ -257,7 +254,7 @@ function HomePage() {
             </Button>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[heroImage, livingImage, bedroomImage, terraceImage].map((src, i) => (
+            {[photos.exteriorNight, photos.livingLounge, photos.bedroomCanopy, photos.thatch].map((src, i) => (
               <img
                 key={i}
                 src={src}
@@ -288,7 +285,7 @@ function HomePage() {
       {/* LAKE MUHAZI */}
       <section className="relative overflow-hidden">
         <img
-          src={terraceImage}
+          src={photos.terrace}
           alt="Evening table set beside Lake Muhazi"
           loading="lazy"
           width={1280}
@@ -365,7 +362,7 @@ function HomePage() {
       {/* FINAL CTA */}
       <section className="relative overflow-hidden">
         <img
-          src={heroImage}
+          src={photos.exterior}
           alt="Lake Muhazi at golden hour"
           loading="lazy"
           width={1920}
