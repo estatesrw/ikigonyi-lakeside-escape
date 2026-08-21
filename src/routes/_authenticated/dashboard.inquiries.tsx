@@ -47,7 +47,16 @@ type Inquiry = {
 function InquiriesPage() {
   const { data: property } = usePropertyId();
   const qc = useQueryClient();
+  const access = useAccess();
   const [active, setActive] = useState<Inquiry | null>(null);
+  const [convert, setConvert] = useState<{
+    inquiry: Inquiry;
+    checkIn: string;
+    checkOut: string;
+    guests: number;
+    status: "pending" | "confirmed";
+  } | null>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["inquiries", property?.id],
