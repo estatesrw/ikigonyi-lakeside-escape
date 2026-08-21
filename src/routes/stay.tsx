@@ -3,13 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { photos } from "@/lib/photos";
 import { BookingSearch } from "@/components/site/BookingSearch";
-import bedroomImage from "@/assets/bedroom.jpg";
-import livingImage from "@/assets/living.jpg";
-import terraceImage from "@/assets/terrace.jpg";
 
 const DESCRIPTION =
-  "Four bedrooms sleeping up to twelve guests, living and social spaces, a full kitchen and private lakeside outdoor areas at Ikigonyi Round House on Lake Muhazi.";
+  "Six bedrooms sleeping up to twelve guests, living and social spaces, a full kitchen and private lakeside outdoor areas at Ikigonyi Round House on Lake Muhazi.";
 
 export const Route = createFileRoute("/stay")({
   head: () => ({
@@ -42,20 +40,20 @@ function StayPage() {
     },
   });
 
-  const images = [bedroomImage, livingImage, terraceImage];
+  const images = [photos.bedroomKing, photos.bedroomCanopy, photos.bedroomTwin, photos.bedroomLamplight, photos.bedroomDarkWood, photos.bedroomAnnexe];
 
   return (
     <SiteLayout>
       <PageHeader
         eyebrow="The house"
-        title="A round house, built around the view."
-        intro="Ikigonyi is a whole-house retreat: four bedrooms, generous social spaces and an outdoor life that follows the lake from sunrise to evening."
+        title="A thatched round house, built around the view."
+        intro="Ikigonyi is a whole-house retreat: six bedrooms across two lakefront houses, generous social spaces and an outdoor life that follows the lake from sunrise to evening."
       />
 
       <section className="mx-auto max-w-7xl px-5 md:px-8">
         <img
-          src={livingImage}
-          alt="Living space at Ikigonyi Round House"
+          src={photos.terrace}
+          alt="Panoramic covered terrace overlooking Lake Muhazi"
           loading="lazy"
           width={1280}
           height={960}
@@ -65,7 +63,7 @@ function StayPage() {
 
       <section className="mx-auto max-w-7xl px-5 py-20 md:px-8">
         <p className="eyebrow">Bedrooms</p>
-        <h2 className="display mt-4 text-3xl md:text-4xl">Four rooms, twelve guests.</h2>
+        <h2 className="display mt-4 text-3xl md:text-4xl">Six rooms, ten beds, twelve guests.</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {(rooms ?? []).map((room, i) => (
             <article key={room.id} className="overflow-hidden rounded-3xl border border-border bg-card">

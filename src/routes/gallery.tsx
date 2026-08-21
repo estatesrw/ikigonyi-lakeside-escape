@@ -5,10 +5,7 @@ import { X } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import heroImage from "@/assets/hero-lake.jpg";
-import livingImage from "@/assets/living.jpg";
-import bedroomImage from "@/assets/bedroom.jpg";
-import terraceImage from "@/assets/terrace.jpg";
+import { galleryPhotos } from "@/lib/photos";
 
 const DESCRIPTION =
   "Photography of Ikigonyi Round House — the house, bedrooms, living spaces, the lake, outdoor areas and experiences on Lake Muhazi, Rwanda.";
@@ -35,16 +32,7 @@ const CATEGORIES = [
   "Experiences",
 ] as const;
 
-const PLACEHOLDERS = [
-  { id: "p1", category: "House", image_url: heroImage, alt_text: "The round house at sunrise" },
-  { id: "p2", category: "Living Spaces", image_url: livingImage, alt_text: "Living space" },
-  { id: "p3", category: "Bedrooms", image_url: bedroomImage, alt_text: "Bedroom with lake view" },
-  { id: "p4", category: "Outdoor", image_url: terraceImage, alt_text: "Terrace at dusk" },
-  { id: "p5", category: "Lake", image_url: heroImage, alt_text: "Lake Muhazi shoreline" },
-  { id: "p6", category: "Experiences", image_url: terraceImage, alt_text: "Long table dinner" },
-  { id: "p7", category: "House", image_url: livingImage, alt_text: "Interior detail" },
-  { id: "p8", category: "Bedrooms", image_url: bedroomImage, alt_text: "Morning light" },
-];
+const PLACEHOLDERS = galleryPhotos;
 
 function GalleryPage() {
   const [active, setActive] = useState<(typeof CATEGORIES)[number]>("All");

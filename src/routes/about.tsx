@@ -2,8 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { useSiteContent } from "@/lib/property";
-import livingImage from "@/assets/living.jpg";
-import heroImage from "@/assets/hero-lake.jpg";
+import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
   "The story behind Ikigonyi Round House — a private lakeside retreat on Lake Muhazi, Rwanda, managed by EstatesRW.";
@@ -33,8 +32,8 @@ function AboutPage() {
 
       <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-24 md:grid-cols-2 md:px-8">
         <img
-          src={livingImage}
-          alt="Interior of Ikigonyi Round House"
+          src={photos.living}
+          alt="Bright curved living room at Ikigonyi Round House"
           loading="lazy"
           width={1280}
           height={960}
@@ -46,7 +45,7 @@ function AboutPage() {
             space that opens outward toward the water on every side.
           </p>
           <p>
-            Four bedrooms sleep up to twelve guests, which makes Ikigonyi as suited to two people
+            Six bedrooms and ten beds sleep up to twelve guests, which makes Ikigonyi as suited to two people
             over a quiet weekend as it is to a family, a group of friends or a small team stepping
             away from the office.
           </p>
@@ -59,7 +58,7 @@ function AboutPage() {
 
       <section className="relative overflow-hidden">
         <img
-          src={heroImage}
+          src={photos.lake}
           alt="Lake Muhazi shoreline"
           loading="lazy"
           width={1920}
