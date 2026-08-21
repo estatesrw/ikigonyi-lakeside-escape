@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { BookingSearch } from "@/components/site/BookingSearch";
 
 const DESCRIPTION =
-  "Four bedrooms sleeping up to twelve guests, living and social spaces, a full kitchen and private lakeside outdoor areas at Ikigonyi Round House on Lake Muhazi.";
+  "Six bedrooms sleeping up to twelve guests, living and social spaces, a full kitchen and private lakeside outdoor areas at Ikigonyi Round House on Lake Muhazi.";
 
 export const Route = createFileRoute("/stay")({
   head: () => ({

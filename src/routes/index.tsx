@@ -9,7 +9,7 @@ import { useSiteContent } from "@/lib/property";
 import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
-  "Ikigonyi Round House is a private lakeside retreat on Lake Muhazi, Rwanda. Four bedrooms, up to twelve guests — a weekend escape from Kigali for families, friends and private gatherings.";
+  "Ikigonyi Round House is an African-style lakefront villa on Lake Muhazi, Rwamagana, Rwanda. Six bedrooms, up to twelve guests, a panoramic thatched terrace and a private chef on request.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,11 +31,12 @@ export const Route = createFileRoute("/")({
           description: DESCRIPTION,
           address: {
             "@type": "PostalAddress",
-            addressRegion: "Lake Muhazi",
+            addressLocality: "Rwamagana",
+            addressRegion: "Eastern Province",
             addressCountry: "RW",
           },
-          numberOfRooms: 4,
-          petsAllowed: false,
+          numberOfRooms: 6,
+          petsAllowed: true,
         }),
       },
     ],
@@ -44,21 +45,23 @@ export const Route = createFileRoute("/")({
 });
 
 const AMENITIES = [
-  "4 Bedrooms",
+  "6 Bedrooms · 10 Beds",
+  "6 Bathrooms",
   "Up to 12 Guests",
-  "Private Lakeside Setting",
+  "Waterfront Setting",
   "Fully Equipped Kitchen",
-  "Living & Social Spaces",
-  "Wi-Fi",
-  "Outdoor Spaces",
-  "Lake Experiences",
+  "Panoramic Terrace",
+  "Private Chef on Request",
+  "Wifi & Workspace",
+  "Free Parking",
+  "Pets Allowed",
 ];
 
 const WHY = [
   { title: "Private", body: "The whole house is yours — no shared spaces, no reception desk." },
   { title: "Peaceful", body: "Quiet mornings, open water and the sound of the lake." },
-  { title: "Lakeside", body: "Set directly on the shores of Lake Muhazi." },
-  { title: "Group Friendly", body: "Four bedrooms and space for up to twelve guests." },
+  { title: "Lakeside", body: "Waterfront, with the lake a short walk from the terrace." },
+  { title: "Group Friendly", body: "Six bedrooms across two houses, sleeping up to twelve." },
   { title: "Designed for Experiences", body: "Built for gatherings, meals and slow weekends." },
   { title: "Close to Kigali", body: "An easy change of scenery from the city." },
 ];
@@ -100,7 +103,7 @@ function HomePage() {
       <section className="relative flex min-h-[92svh] items-end overflow-hidden">
         <img
           src={photos.exterior}
-          alt="Ikigonyi Round House at sunrise on the shore of Lake Muhazi"
+          alt="The thatched stone round house above Lake Muhazi"
           width={1920}
           height={1088}
           className="slow-zoom absolute inset-0 size-full object-cover"
@@ -111,7 +114,7 @@ function HomePage() {
             <MapPin className="size-3.5" /> Lake Muhazi, Rwanda
           </p>
           <h1 className="display fade-up mt-6 max-w-4xl text-5xl leading-[1.02] text-primary-foreground md:text-8xl">
-            {content?.["hero_headline"] ?? "Escape to Lake Muhazi."}
+            {content?.["hero_headline"] ?? "African-style villa on Lake Muhazi."}
           </h1>
           <p className="fade-up mt-6 max-w-xl text-base leading-relaxed text-primary-foreground/85 md:text-lg">
             {content?.["hero_subheadline"] ??
@@ -146,12 +149,12 @@ function HomePage() {
             {content?.["intro_headline"] ?? "A private retreat by the lake."}
           </h2>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-            Ikigonyi Round House is a unique lakeside retreat on the shores of Lake Muhazi, offering
-            a peaceful escape surrounded by nature.
+            Two lakefront houses on the shores of Lake Muhazi, built in traditional African style
+            with a spectacular handcrafted thatched roof.
           </p>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Designed for families, friends, couples and small groups, Ikigonyi combines the privacy
-            of a home with the experience of a destination getaway.
+            Local stone, handcrafted wood and thatch, a panoramic terrace, bright living rooms and an
+            open kitchen — perfect for families, friends, retreats and wellness stays.
           </p>
           <Button asChild variant="link" className="mt-6 px-0 text-base">
             <Link to="/about">Read our story →</Link>
@@ -159,7 +162,7 @@ function HomePage() {
         </div>
         <img
           src={photos.living}
-          alt="Warm interior living space with lake views"
+          alt="Bright curved living room with lake views"
           loading="lazy"
           width={1280}
           height={960}
@@ -174,7 +177,7 @@ function HomePage() {
             <div>
               <p className="eyebrow">The house</p>
               <h2 className="display mt-4 max-w-xl text-4xl leading-tight md:text-5xl">
-                Four bedrooms, twelve guests, one shoreline.
+                Six bedrooms, twelve guests, one shoreline.
               </h2>
             </div>
             <Button asChild className="rounded-full px-6">
@@ -185,7 +188,7 @@ function HomePage() {
           <div className="mt-12 grid gap-8 lg:grid-cols-[1.3fr_1fr]">
             <img
               src={photos.bedroomKing}
-              alt="Bedroom opening onto the lake"
+              alt="King bedroom with carved wooden headboard"
               loading="lazy"
               width={1280}
               height={960}
