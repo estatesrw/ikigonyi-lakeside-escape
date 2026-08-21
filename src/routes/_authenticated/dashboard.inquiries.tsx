@@ -16,6 +16,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { fetchQuote, type Quote } from "@/components/site/BookingSearch";
+import { todayISO } from "@/lib/property";
+import { useAccess } from "@/lib/dashboard";
 import { Fld, Picker } from "./dashboard.bookings";
 
 export const Route = createFileRoute("/_authenticated/dashboard/inquiries")({
