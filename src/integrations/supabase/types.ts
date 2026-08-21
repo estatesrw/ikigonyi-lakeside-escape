@@ -996,6 +996,17 @@ export type Database = {
     Functions: {
       can_see_financials: { Args: never; Returns: boolean }
       claim_first_owner: { Args: never; Returns: Json }
+      convert_inquiry_to_booking: {
+        Args: {
+          _check_in: string
+          _check_out: string
+          _guests?: number
+          _inquiry_id: string
+          _notes?: string
+          _status?: Database["public"]["Enums"]["booking_status"]
+        }
+        Returns: Json
+      }
       create_booking_request: {
         Args: {
           _check_in: string
