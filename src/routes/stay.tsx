@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { photos } from "@/lib/photos";
 import { BookingSearch } from "@/components/site/BookingSearch";
 
 const DESCRIPTION =
