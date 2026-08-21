@@ -229,9 +229,131 @@ function InquiriesPage() {
                   onChange={(e) => setActive({ ...active, notes: e.target.value })}
                 />
               </Fld>
-              <DialogFooter>
+              <DialogFooter className="gap-2 sm:justify-between">
+                {access.canManage ? (
+                  <Button type="button" variant="outline" onClick={() => startConvert(active)}>
+                    Convert to booking
+                  </Button>
+                ) : (
+                  <span />
+                )}
                 <Button type="submit" disabled={update.isPending}>
                   Save
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={!!convert}
+        onOpenChange={(o) => {
+          if (!o) {
+            setConvert(null);
+            setQuote(null);
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Convert “{convert?.inquiry.name}” to a booking</DialogTitle>
+          </DialogHeader>
+          {convert && (
+            <form
+              className="space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                convertMutation.mutate();
+              }}
+            >
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Fld label="Check-in">
+                  <Input
+                    type="date"
+                    required
+                    value={convert.checkIn}
+                    onChange={(e) => {
+                      setConvert({ ...convert, checkIn: e.target.value });
+                      setQuote(null);
+                    }}
+                  />
+                </Fld>
+                <Fld label="Check-out">
+                  <Input
+                    type="date"
+                    required
+                    min={convert.checkIn}
+                    value={convert.checkOut}
+                    onChange={(e) => {
+                      setConvert({ ...convert, checkOut: e.target.value });
+                      setQuote(null);
+                    }}
+                  />
+                </Fld>
+                <Fld label="Guests">
+                  <Input
+                    type="number"
+                    min={1}
+                    value={convert.guests}
+                    onChange={(e) => {
+                      setConvert({ ...convert, guests: Number(e.target.value) });
+                      setQuote(null);
+                    }}
+                  />
+                </Fld>
+              </div>
+
+              <Fld label="Booking status">
+                <Picker
+                  value={convert.status}
+                  options={["pending", "confirmed"] as const}
+                  onChange={(v) =>
+                    setConvert({ ...convert, status: v as "pending" | "confirmed" })
+                  }
+                />
+              </Fld>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                disabled={checkQuote.isPending}
+                onClick={() => checkQuote.mutate()}
+              >
+                Check availability & price
+              </Button>
+
+              {quote && !quote.error && (
+                <div className="rounded-lg bg-muted/60 p-3 text-sm">
+                  <p>
+                    {quote.nights} nights ·{" "}
+                    {formatMoney(Number(quote.avg_nightly), quote.currency)} avg / night
+                  </p>
+                  <p className="mt-1 font-medium">
+                    Total {formatMoney(Number(quote.total), quote.currency)}
+                  </p>
+                  <p
+                    className={
+                      quote.available ? "mt-2 text-primary" : "mt-2 text-destructive"
+                    }
+                  >
+                    {quote.available
+                      ? "Dates are free — confirming will block the calendar."
+                      : "These dates overlap a confirmed booking or blocked period."}
+                  </p>
+                </div>
+              )}
+
+              <DialogFooter>
+                <Button
+                  type="submit"
+                  disabled={
+                    convertMutation.isPending ||
+                    (convert.status === "confirmed" && quote != null && !quote.available)
+                  }
+                >
+                  Create booking
                 </Button>
               </DialogFooter>
             </form>
