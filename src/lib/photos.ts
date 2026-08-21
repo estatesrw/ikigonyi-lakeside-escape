@@ -159,13 +159,13 @@ export const galleryPhotos: {
   },
   {
     id: "g18",
-    category: "Outdoor",
+    category: "House",
     image_url: photos.bathroomStone,
     alt_text: "Bathroom with stone walls and carved wooden basin",
   },
   {
     id: "g19",
-    category: "Outdoor",
+    category: "House",
     image_url: photos.bathroomShower,
     alt_text: "Walk-in rain shower with stone tiling",
   },
