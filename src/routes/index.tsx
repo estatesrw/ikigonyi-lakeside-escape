@@ -429,6 +429,24 @@ function HomePage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="mx-auto max-w-4xl px-5 py-24 md:px-8">
+        <p className="eyebrow">Good to know</p>
+        <h2 className="display mt-4 text-4xl leading-tight md:text-5xl">
+          Staying at Lake Muhazi.
+        </h2>
+        <div className="mt-10 divide-y divide-border border-y border-border">
+          {FAQS.map((f) => (
+            <details key={f.q} className="group py-5">
+              <summary className="cursor-pointer list-none text-base font-medium marker:hidden">
+                {f.q}
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {/* FINAL CTA */}
       <section className="relative overflow-hidden">
         <img
