@@ -330,33 +330,42 @@ export type Database = {
       gallery_images: {
         Row: {
           alt_text: string | null
+          caption: string | null
           category: string
           created_at: string
           id: string
           image_url: string
           is_published: boolean
+          media_type: string
           property_id: string
           sort_order: number
+          video_url: string | null
         }
         Insert: {
           alt_text?: string | null
+          caption?: string | null
           category?: string
           created_at?: string
           id?: string
           image_url: string
           is_published?: boolean
+          media_type?: string
           property_id: string
           sort_order?: number
+          video_url?: string | null
         }
         Update: {
           alt_text?: string | null
+          caption?: string | null
           category?: string
           created_at?: string
           id?: string
           image_url?: string
           is_published?: boolean
+          media_type?: string
           property_id?: string
           sort_order?: number
+          video_url?: string | null
         }
         Relationships: [
           {
@@ -1058,6 +1067,11 @@ export type Database = {
           _guests?: number
           _property_id: string
         }
+        Returns: Json
+      }
+      remove_user_role: { Args: { _user_id: string }; Returns: Json }
+      set_user_role: {
+        Args: { _email: string; _role: Database["public"]["Enums"]["app_role"] }
         Returns: Json
       }
     }
