@@ -150,26 +150,18 @@ function ContentPage() {
   async function move(list: Required<MediaRow>[], index: number, dir: -1 | 1) {
     const target = index + dir;
     if (target < 0 || target >= list.length) return;
-    const a = list[index];
-    const b = list[target];
-    const updates = [
-      supabase.from("gallery_images").update({ sort_order: b.sort_order }).eq("id", a.id),
-      supabase.from("gallery_images").update({ sort_order: a.sort_order }).eq("id", b.id),
-    ];
-    // If both share the same sort_order, rewrite the whole list cleanly.
-    if (a.sort_order === b.sort_order) {
-      const reordered = [...list];
-      reordered.splice(target, 0, reordered.splice(index, 1)[0]!);
-      await Promise.all(
-        reordered.map((row, i) =>
-          supabase.from("gallery_images").update({ sort_order: i }).eq("id", row.id),
-        ),
-      );
-    } else {
-      await Promise.all(updates);
-    }
+    const reordered = [...list];
+    const [moved] = reordered.splice(index, 1);
+    if (!moved) return;
+    reordered.splice(target, 0, moved);
+    await Promise.all(
+      reordered.map((row, i) =>
+        supabase.from("gallery_images").update({ sort_order: i }).eq("id", row.id),
+      ),
+    );
     invalidateGallery();
   }
+
 
   if (isLoading || !data) return <Loading />;
 
