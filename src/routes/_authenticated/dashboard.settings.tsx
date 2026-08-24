@@ -140,42 +140,164 @@ function SettingsPage() {
         </form>
       </div>
 
-      {access.isOwner && (
-        <div className="mt-6 overflow-hidden rounded-xl border border-border bg-card">
-          <div className="p-5 pb-0">
-            <h2 className="text-sm font-semibold">Team access</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Roles control what each teammate can see. Only owners and managers see financials.
-            </p>
-          </div>
-          {!team || team.length === 0 ? (
-            <div className="p-5">
-              <EmptyState title="No team members" />
-            </div>
-          ) : (
-            <Table className="mt-4">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Member</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {team.map((t) => (
-                  <TableRow key={t.id}>
-                    <TableCell>{t.profile?.full_name ?? "—"}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {t.profile?.email ?? "—"}
-                    </TableCell>
-                    <TableCell>{label(t.role)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
+      {access.isOwner && <TeamAccess team={team} />}
+    </div>
+  );
+}
+
+const ROLES = ["owner", "estatesrw_manager", "operations_staff"] as const;
+type Role = (typeof ROLES)[number];
+
+const ROLE_HINT: Record<Role, string> = {
+  owner: "Full access, including team roles and financials.",
+  estatesrw_manager: "Bookings, calendar, pricing, content and financials.",
+  operations_staff: "Day-to-day operations. No financial figures.",
+};
+
+type TeamMember = {
+  id: string;
+  user_id: string;
+  role: string;
+  profile?: { full_name: string | null; email: string | null } | undefined;
+};
+
+function TeamAccess({ team }: { team: TeamMember[] | undefined }) {
+  const qc = useQueryClient();
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState<Role>("estatesrw_manager");
+
+  const assign = useMutation({
+    mutationFn: async (vars: { email: string; role: Role }) => {
+      const { data, error } = await supabase.rpc("set_user_role", {
+        _email: vars.email,
+        _role: vars.role,
+      });
+      if (error) throw error;
+      const res = data as { error?: string };
+      if (res?.error) throw new Error(res.error);
+    },
+    onSuccess: () => {
+      toast.success("Role assigned");
+      setEmail("");
+      qc.invalidateQueries({ queryKey: ["team"] });
+      qc.invalidateQueries({ queryKey: ["roles"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const revoke = useMutation({
+    mutationFn: async (userId: string) => {
+      const { data, error } = await supabase.rpc("remove_user_role", { _user_id: userId });
+      if (error) throw error;
+      const res = data as { error?: string };
+      if (res?.error) throw new Error(res.error);
+    },
+    onSuccess: () => {
+      toast.success("Access removed");
+      qc.invalidateQueries({ queryKey: ["team"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="mt-6 overflow-hidden rounded-xl border border-border bg-card">
+      <div className="p-5 pb-0">
+        <h2 className="text-sm font-semibold">Team access</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Roles control what each teammate can see. Only owners and managers see financials. The
+          person must have signed up first.
+        </p>
+      </div>
+
+      <form
+        className="grid gap-3 p-5 sm:grid-cols-[1fr_220px_auto]"
+        onSubmit={(e) => {
+          e.preventDefault();
+          assign.mutate({ email, role });
+        }}
+      >
+        <Fld label="Teammate email">
+          <Input
+            type="email"
+            required
+            placeholder="name@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Fld>
+        <Fld label="Role">
+          <Select value={role} onValueChange={(v) => setRole(v as Role)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {ROLES.map((r) => (
+                <SelectItem key={r} value={r}>
+                  {label(r)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Fld>
+        <div className="flex items-end">
+          <Button type="submit" disabled={assign.isPending}>
+            Assign role
+          </Button>
         </div>
+        <p className="text-xs text-muted-foreground sm:col-span-3">{ROLE_HINT[role]}</p>
+      </form>
+
+      {!team || team.length === 0 ? (
+        <div className="p-5 pt-0">
+          <EmptyState title="No team members" />
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Member</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead className="text-right">Access</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {team.map((t) => (
+              <TableRow key={t.id}>
+                <TableCell>{t.profile?.full_name ?? "—"}</TableCell>
+                <TableCell className="text-muted-foreground">{t.profile?.email ?? "—"}</TableCell>
+                <TableCell>
+                  <Select
+                    value={t.role}
+                    onValueChange={(v) =>
+                      t.profile?.email
+                        ? assign.mutate({ email: t.profile.email, role: v as Role })
+                        : toast.error("This member has no email on file")
+                    }
+                  >
+                    <SelectTrigger className="h-8 w-[200px] text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ROLES.map((r) => (
+                        <SelectItem key={r} value={r}>
+                          {label(r)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button size="sm" variant="ghost" onClick={() => revoke.mutate(t.user_id)}>
+                    Remove
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
     </div>
   );
 }
+
