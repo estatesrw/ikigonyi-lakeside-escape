@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Mail, MessageCircle } from "lucide-react";
+import { Instagram, Mail, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useProperty, whatsappLink } from "@/lib/property";
+import { CONTACT, useProperty, whatsappLink } from "@/lib/property";
 
 export function SiteFooter() {
   const { data: property } = useProperty();

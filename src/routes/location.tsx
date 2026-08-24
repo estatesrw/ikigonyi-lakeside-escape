@@ -1,20 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, Mail, MessageCircle } from "lucide-react";
+import { MapPin, Mail, MessageCircle, Phone } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { useProperty, whatsappLink } from "@/lib/property";
+import { CONTACT, SITE_URL, useProperty, whatsappLink } from "@/lib/property";
 
 const DESCRIPTION =
-  "Ikigonyi Round House is located on the shores of Lake Muhazi, Rwanda. Directions and arrival details for your stay.";
+  "How to reach Ikigonyi Round House on Lake Muhazi, Rwamagana — about an hour from Kigali. Directions, drive times and arrival details for your lakeside stay in Rwanda.";
 
 export const Route = createFileRoute("/location")({
   head: () => ({
     meta: [
-      { title: "Location — Ikigonyi Round House, Lake Muhazi, Rwanda" },
+      { title: "Location & Directions — Lake Muhazi Stay near Kigali, Rwanda" },
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: "Location — Lake Muhazi, Rwanda" },
       { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/location` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/location` }],
   }),
   component: LocationPage,
 });
