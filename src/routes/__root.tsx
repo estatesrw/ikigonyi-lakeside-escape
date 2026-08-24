@@ -83,9 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A private lakeside retreat on Lake Muhazi, Rwanda. Four bedrooms, up to twelve guests.",
+          "A private lakeside retreat on Lake Muhazi, Rwanda. Six bedrooms, up to twelve guests.",
       },
       { name: "author", content: "EstatesRW" },
+      { property: "og:site_name", content: "Ikigonyi Round House" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
