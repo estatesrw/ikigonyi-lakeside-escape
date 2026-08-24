@@ -17,6 +17,7 @@ import { Route as BookRouteImport } from './routes/book'
 import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LocationRouteImport } from './routes/location'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StayRouteImport } from './routes/stay'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
@@ -70,6 +71,11 @@ const GalleryRoute = GalleryRouteImport.update({
 const LocationRoute = LocationRouteImport.update({
   id: '/location',
   path: '/location',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StayRoute = StayRouteImport.update({
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/experiences': typeof ExperiencesRoute
   '/gallery': typeof GalleryRoute
   '/location': typeof LocationRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/experiences': typeof ExperiencesRoute
   '/gallery': typeof GalleryRoute
   '/location': typeof LocationRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/experiences': typeof ExperiencesRoute
   '/gallery': typeof GalleryRoute
   '/location': typeof LocationRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/experiences'
     | '/gallery'
     | '/location'
+    | '/sitemap.xml'
     | '/stay'
     | '/dashboard'
     | '/dashboard/bookings'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/experiences'
     | '/gallery'
     | '/location'
+    | '/sitemap.xml'
     | '/stay'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/experiences'
     | '/gallery'
     | '/location'
+    | '/sitemap.xml'
     | '/stay'
     | '/_authenticated/dashboard'
     | '/_authenticated/dashboard/bookings'
@@ -318,6 +330,7 @@ export interface RootRouteChildren {
   ExperiencesRoute: typeof ExperiencesRoute
   GalleryRoute: typeof GalleryRoute
   LocationRoute: typeof LocationRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StayRoute: typeof StayRoute
 }
 
@@ -377,6 +390,13 @@ declare module '@tanstack/react-router' {
       path: '/location'
       fullPath: '/location'
       preLoaderRoute: typeof LocationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/stay': {
@@ -545,6 +565,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperiencesRoute: ExperiencesRoute,
   GalleryRoute: GalleryRoute,
   LocationRoute: LocationRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StayRoute: StayRoute,
 }
 export const routeTree = rootRouteImport
