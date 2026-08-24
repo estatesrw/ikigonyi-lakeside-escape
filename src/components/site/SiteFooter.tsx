@@ -52,25 +52,33 @@ export function SiteFooter() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <MessageCircle className="size-4" /> WhatsApp
+                <MessageCircle className="size-4" /> WhatsApp {CONTACT.phoneDisplay}
               </a>
             </li>
             <li>
               <a
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                href={`mailto:${property?.contact_email ?? "hello@estatesrw.com"}`}
+                href={`tel:${CONTACT.phone}`}
               >
-                <Mail className="size-4" /> {property?.contact_email ?? "hello@estatesrw.com"}
+                <Phone className="size-4" /> {CONTACT.phoneDisplay}
               </a>
             </li>
             <li>
               <a
                 className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground"
-                href={property?.instagram_url ?? "https://instagram.com"}
+                href={`mailto:${property?.contact_email ?? CONTACT.email}`}
+              >
+                <Mail className="size-4" /> {property?.contact_email ?? CONTACT.email}
+              </a>
+            </li>
+            <li>
+              <a
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                href={property?.instagram_url ?? CONTACT.instagram}
                 target="_blank"
                 rel="noreferrer"
               >
-                <Instagram className="size-4" /> Instagram
+                <Instagram className="size-4" /> @ikigonyiroundhouse
               </a>
             </li>
           </ul>
