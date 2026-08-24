@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Plus, Trash2, Video } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EmptyState, Loading, PageTitle } from "@/components/dashboard/ui";
 import { useAccess, usePropertyId } from "@/lib/dashboard";
@@ -12,22 +12,42 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import { Fld } from "./dashboard.bookings";
 
 export const Route = createFileRoute("/_authenticated/dashboard/content")({
   component: ContentPage,
 });
 
-type ImageRow = {
+const CATEGORIES = [
+  "House",
+  "Bedrooms",
+  "Living Spaces",
+  "Lake",
+  "Outdoor",
+  "Experiences",
+] as const;
+
+type MediaRow = {
   id?: string;
   category?: string;
+  media_type?: string;
   image_url?: string;
+  video_url?: string | null;
+  caption?: string | null;
   alt_text?: string | null;
   sort_order?: number;
   is_published?: boolean;
@@ -38,7 +58,8 @@ function ContentPage() {
   const access = useAccess();
   const qc = useQueryClient();
   const [drafts, setDrafts] = useState<Record<string, string>>({});
-  const [editing, setEditing] = useState<ImageRow | null>(null);
+  const [editing, setEditing] = useState<MediaRow | null>(null);
+  const [filter, setFilter] = useState<string>("All");
 
   const { data, isLoading } = useQuery({
     queryKey: ["content", property?.id],
@@ -54,7 +75,7 @@ function ContentPage() {
       ]);
       if (content.error) throw content.error;
       if (images.error) throw images.error;
-      return { content: content.data, images: images.data as unknown as Required<ImageRow>[] };
+      return { content: content.data, images: (images.data ?? []) as Required<MediaRow>[] };
     },
   });
 
@@ -71,12 +92,18 @@ function ContentPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const saveImage = useMutation({
-    mutationFn: async (row: ImageRow) => {
+  const saveMedia = useMutation({
+    mutationFn: async (row: MediaRow) => {
+      const isVideo = (row.media_type ?? "image") === "video";
+      if (isVideo && !row.video_url) throw new Error("A video URL is required");
+      if (!isVideo && !row.image_url) throw new Error("An image URL is required");
       const payload = {
         property_id: property!.id,
-        category: row.category ?? "general",
+        category: row.category ?? "House",
+        media_type: isVideo ? "video" : "image",
         image_url: row.image_url ?? "",
+        video_url: isVideo ? (row.video_url ?? null) : null,
+        caption: row.caption?.trim() ? row.caption : null,
         alt_text: row.alt_text ?? null,
         sort_order: Number(row.sort_order ?? 0),
         is_published: row.is_published ?? true,
@@ -87,34 +114,75 @@ function ContentPage() {
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Image saved");
+      toast.success("Media saved");
       setEditing(null);
-      qc.invalidateQueries({ queryKey: ["content"] });
-      qc.invalidateQueries({ queryKey: ["gallery"] });
+      invalidateGallery();
     },
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const removeImage = useMutation({
+  const patchMedia = useMutation({
+    mutationFn: async ({ id, patch }: { id: string; patch: Partial<MediaRow> }) => {
+      const { error } = await supabase.from("gallery_images").update(patch).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => invalidateGallery(),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const removeMedia = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("gallery_images").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Image removed");
-      qc.invalidateQueries({ queryKey: ["content"] });
+      toast.success("Removed");
+      invalidateGallery();
     },
+    onError: (e: Error) => toast.error(e.message),
   });
+
+  function invalidateGallery() {
+    qc.invalidateQueries({ queryKey: ["content"] });
+    qc.invalidateQueries({ queryKey: ["gallery"] });
+  }
+
+  async function move(list: Required<MediaRow>[], index: number, dir: -1 | 1) {
+    const target = index + dir;
+    if (target < 0 || target >= list.length) return;
+    const a = list[index];
+    const b = list[target];
+    const updates = [
+      supabase.from("gallery_images").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("gallery_images").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ];
+    // If both share the same sort_order, rewrite the whole list cleanly.
+    if (a.sort_order === b.sort_order) {
+      const reordered = [...list];
+      reordered.splice(target, 0, reordered.splice(index, 1)[0]!);
+      await Promise.all(
+        reordered.map((row, i) =>
+          supabase.from("gallery_images").update({ sort_order: i }).eq("id", row.id),
+        ),
+      );
+    } else {
+      await Promise.all(updates);
+    }
+    invalidateGallery();
+  }
 
   if (isLoading || !data) return <Loading />;
 
+  const all = data.images;
+  const visible = filter === "All" ? all : all.filter((m) => m.category === filter);
+
   return (
     <div>
-      <PageTitle title="Content" description="Edit website copy and gallery imagery." />
+      <PageTitle title="Content" description="Edit website copy, photography and video." />
       <Tabs defaultValue="copy">
         <TabsList>
           <TabsTrigger value="copy">Website copy</TabsTrigger>
-          <TabsTrigger value="gallery">Gallery</TabsTrigger>
+          <TabsTrigger value="gallery">Gallery &amp; video</TabsTrigger>
         </TabsList>
 
         <TabsContent value="copy" className="mt-4 space-y-3">
@@ -146,50 +214,164 @@ function ContentPage() {
         </TabsContent>
 
         <TabsContent value="gallery" className="mt-4">
-          {access.canManage && (
-            <Button
-              className="mb-4"
-              onClick={() =>
-                setEditing({ category: "general", sort_order: data.images.length, is_published: true })
-              }
-            >
-              <Plus className="mr-2 size-4" /> Add image
-            </Button>
-          )}
-          {data.images.length === 0 ? (
-            <EmptyState title="No gallery images" />
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            {["All", ...CATEGORIES].map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setFilter(c)}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-xs transition-colors",
+                  filter === c
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {c}
+              </button>
+            ))}
+            <div className="ml-auto flex gap-2">
+              {access.canManage && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      setEditing({
+                        media_type: "video",
+                        category: "House",
+                        sort_order: all.length,
+                        is_published: true,
+                      })
+                    }
+                  >
+                    <Video className="mr-2 size-4" /> Add video
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      setEditing({
+                        media_type: "image",
+                        category: "House",
+                        sort_order: all.length,
+                        is_published: true,
+                      })
+                    }
+                  >
+                    <Plus className="mr-2 size-4" /> Add image
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+
+          {visible.length === 0 ? (
+            <EmptyState
+              title="No media yet"
+              body="Add photos or videos to publish them across the website."
+            />
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {data.images.map((img) => (
-                <div key={img.id} className="overflow-hidden rounded-xl border border-border bg-card">
-                  <img
-                    src={img.image_url}
-                    alt={img.alt_text ?? ""}
-                    loading="lazy"
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                  <div className="p-3">
-                    <p className="text-xs text-muted-foreground">
-                      {img.category} · {img.is_published ? "Published" : "Hidden"}
-                    </p>
-                    {access.canManage && (
-                      <div className="mt-2 flex gap-1">
-                        <Button size="sm" variant="ghost" onClick={() => setEditing(img)}>
-                          Edit
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          aria-label="Delete image"
-                          onClick={() => removeImage.mutate(img.id)}
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {visible.map((m) => {
+                const index = all.findIndex((x) => x.id === m.id);
+                return (
+                  <div
+                    key={m.id}
+                    className="overflow-hidden rounded-xl border border-border bg-card"
+                  >
+                    {m.media_type === "video" ? (
+                      <video
+                        src={m.video_url ?? undefined}
+                        poster={m.image_url || undefined}
+                        controls
+                        preload="metadata"
+                        className="aspect-[4/3] w-full bg-muted object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={m.image_url}
+                        alt={m.alt_text ?? ""}
+                        loading="lazy"
+                        className="aspect-[4/3] w-full object-cover"
+                      />
                     )}
+                    <div className="space-y-3 p-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs text-muted-foreground">
+                          #{index + 1} · {m.media_type === "video" ? "Video" : "Photo"}
+                        </p>
+                        {access.canManage && (
+                          <div className="flex gap-1">
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              aria-label="Move earlier"
+                              disabled={index === 0}
+                              onClick={() => move(all, index, -1)}
+                            >
+                              <ArrowUp className="size-4" />
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              aria-label="Move later"
+                              disabled={index === all.length - 1}
+                              onClick={() => move(all, index, 1)}
+                            >
+                              <ArrowDown className="size-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+
+                      <Select
+                        value={m.category}
+                        disabled={!access.canManage}
+                        onValueChange={(value) =>
+                          patchMedia.mutate({ id: m.id, patch: { category: value } })
+                        }
+                      >
+                        <SelectTrigger className="h-8 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CATEGORIES.map((c) => (
+                            <SelectItem key={c} value={c}>
+                              {c}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <div className="flex items-center justify-between gap-2">
+                        <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Switch
+                            checked={m.is_published}
+                            disabled={!access.canManage}
+                            onCheckedChange={(v) =>
+                              patchMedia.mutate({ id: m.id, patch: { is_published: v } })
+                            }
+                          />
+                          {m.is_published ? "Published" : "Hidden"}
+                        </label>
+                        {access.canManage && (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => setEditing(m)}>
+                              Edit
+                            </Button>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              aria-label="Delete media"
+                              onClick={() => removeMedia.mutate(m.id)}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </TabsContent>
@@ -198,33 +380,77 @@ function ContentPage() {
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editing?.id ? "Edit image" : "Add image"}</DialogTitle>
+            <DialogTitle>{editing?.id ? "Edit media" : "Add media"}</DialogTitle>
           </DialogHeader>
           {editing && (
             <form
               className="space-y-4"
               onSubmit={(e) => {
                 e.preventDefault();
-                saveImage.mutate(editing);
+                saveMedia.mutate(editing);
               }}
             >
-              <Fld label="Image URL">
+              <Fld label="Type">
+                <Select
+                  value={editing.media_type ?? "image"}
+                  onValueChange={(v) => setEditing({ ...editing, media_type: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="image">Photo</SelectItem>
+                    <SelectItem value="video">Video</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Fld>
+              {editing.media_type === "video" && (
+                <Fld label="Video URL (MP4 or WebM)">
+                  <Input
+                    required
+                    value={editing.video_url ?? ""}
+                    onChange={(e) => setEditing({ ...editing, video_url: e.target.value })}
+                  />
+                </Fld>
+              )}
+              <Fld
+                label={
+                  editing.media_type === "video" ? "Poster image URL (optional)" : "Image URL"
+                }
+              >
                 <Input
-                  required
+                  required={editing.media_type !== "video"}
                   value={editing.image_url ?? ""}
                   onChange={(e) => setEditing({ ...editing, image_url: e.target.value })}
                 />
               </Fld>
               <Fld label="Category">
-                <Input
-                  value={editing.category ?? ""}
-                  onChange={(e) => setEditing({ ...editing, category: e.target.value })}
-                />
+                <Select
+                  value={editing.category ?? "House"}
+                  onValueChange={(v) => setEditing({ ...editing, category: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIES.map((c) => (
+                      <SelectItem key={c} value={c}>
+                        {c}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Fld>
               <Fld label="Alt text">
                 <Input
                   value={editing.alt_text ?? ""}
                   onChange={(e) => setEditing({ ...editing, alt_text: e.target.value })}
+                />
+              </Fld>
+              <Fld label="Caption (optional)">
+                <Input
+                  value={editing.caption ?? ""}
+                  onChange={(e) => setEditing({ ...editing, caption: e.target.value })}
                 />
               </Fld>
               <Fld label="Sort order">
@@ -242,8 +468,8 @@ function ContentPage() {
                 <span className="text-sm">Published on the website</span>
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={saveImage.isPending}>
-                  Save image
+                <Button type="submit" disabled={saveMedia.isPending}>
+                  Save
                 </Button>
               </DialogFooter>
             </form>
