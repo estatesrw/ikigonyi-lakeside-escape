@@ -34,9 +34,19 @@ const CATEGORIES = [
 
 const PLACEHOLDERS = galleryPhotos;
 
+type MediaItem = {
+  id: string;
+  category: string;
+  image_url: string;
+  alt_text?: string | null;
+  media_type?: string | null;
+  video_url?: string | null;
+  caption?: string | null;
+};
+
 function GalleryPage() {
   const [active, setActive] = useState<(typeof CATEGORIES)[number]>("All");
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<MediaItem | null>(null);
 
   const { data } = useQuery({
     queryKey: ["gallery"],
@@ -51,7 +61,7 @@ function GalleryPage() {
     },
   });
 
-  const images = data && data.length > 0 ? data : PLACEHOLDERS;
+  const images: MediaItem[] = data && data.length > 0 ? (data as MediaItem[]) : PLACEHOLDERS;
   const filtered = active === "All" ? images : images.filter((i) => i.category === active);
 
   return (
@@ -59,7 +69,7 @@ function GalleryPage() {
       <PageHeader
         eyebrow="Gallery"
         title="A look around Ikigonyi."
-        intro="Images shown are placeholders until the property photography is published from the manager dashboard."
+        intro="Photography and film from the round house, the annexe and the lake shore."
       />
 
       <section className="mx-auto max-w-7xl px-5 pb-24 md:px-8">
@@ -82,30 +92,48 @@ function GalleryPage() {
         </div>
 
         <div className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
-          {filtered.map((img, i) => (
-            <button
-              key={img.id}
-              type="button"
-              onClick={() => setLightbox(img.image_url)}
-              className="block w-full overflow-hidden rounded-2xl"
-              aria-label={`Open image: ${img.alt_text ?? "Ikigonyi Round House"}`}
-            >
-              <img
-                src={img.image_url}
-                alt={img.alt_text ?? "Ikigonyi Round House"}
-                loading="lazy"
-                width={1280}
-                height={960}
-                className={cn(
-                  "w-full object-cover transition-transform duration-700 hover:scale-[1.03]",
-                  i % 3 === 0 ? "aspect-3/4" : i % 3 === 1 ? "aspect-square" : "aspect-4/3",
+          {filtered.map((item, i) =>
+            item.media_type === "video" ? (
+              <figure key={item.id} className="overflow-hidden rounded-2xl">
+                <video
+                  src={item.video_url ?? undefined}
+                  poster={item.image_url || undefined}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full rounded-2xl bg-muted"
+                />
+                {item.caption && (
+                  <figcaption className="mt-2 text-xs text-muted-foreground">
+                    {item.caption}
+                  </figcaption>
                 )}
-              />
-            </button>
-          ))}
+              </figure>
+            ) : (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setLightbox(item)}
+                className="block w-full overflow-hidden rounded-2xl"
+                aria-label={`Open image: ${item.alt_text ?? "Ikigonyi Round House"}`}
+              >
+                <img
+                  src={item.image_url}
+                  alt={item.alt_text ?? "Ikigonyi Round House"}
+                  loading="lazy"
+                  width={1280}
+                  height={960}
+                  className={cn(
+                    "w-full object-cover transition-transform duration-700 hover:scale-[1.03]",
+                    i % 3 === 0 ? "aspect-3/4" : i % 3 === 1 ? "aspect-square" : "aspect-4/3",
+                  )}
+                />
+              </button>
+            ),
+          )}
         </div>
         {filtered.length === 0 && (
-          <p className="mt-10 text-sm text-muted-foreground">No images in this category yet.</p>
+          <p className="mt-10 text-sm text-muted-foreground">No media in this category yet.</p>
         )}
       </section>
 
@@ -125,8 +153,8 @@ function GalleryPage() {
             <X className="size-6" />
           </button>
           <img
-            src={lightbox}
-            alt="Ikigonyi Round House"
+            src={lightbox.image_url}
+            alt={lightbox.alt_text ?? "Ikigonyi Round House"}
             className="max-h-[88svh] max-w-full rounded-xl object-contain"
           />
         </div>
@@ -134,3 +162,4 @@ function GalleryPage() {
     </SiteLayout>
   );
 }
+
