@@ -1,20 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, Mail, MessageCircle } from "lucide-react";
+import { MapPin, Mail, MessageCircle, Phone } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { useProperty, whatsappLink } from "@/lib/property";
+import { CONTACT, SITE_URL, useProperty, whatsappLink } from "@/lib/property";
 
 const DESCRIPTION =
-  "Ikigonyi Round House is located on the shores of Lake Muhazi, Rwanda. Directions and arrival details for your stay.";
+  "How to reach Ikigonyi Round House on Lake Muhazi, Rwamagana — about an hour from Kigali. Directions, drive times and arrival details for your lakeside stay in Rwanda.";
 
 export const Route = createFileRoute("/location")({
   head: () => ({
     meta: [
-      { title: "Location — Ikigonyi Round House, Lake Muhazi, Rwanda" },
+      { title: "Location & Directions — Lake Muhazi Stay near Kigali, Rwanda" },
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: "Location — Lake Muhazi, Rwanda" },
       { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/location` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/location` }],
   }),
   component: LocationPage,
 });
@@ -60,14 +64,28 @@ function LocationPage() {
           <div className="mt-6 space-y-3">
             <Button asChild variant="outline" className="w-full justify-start rounded-full">
               <a href={whatsappLink(property?.whatsapp_number)} target="_blank" rel="noreferrer">
-                <MessageCircle className="mr-2 size-4" /> Chat with us
+                <MessageCircle className="mr-2 size-4" /> WhatsApp {CONTACT.phoneDisplay}
               </a>
             </Button>
             <Button asChild variant="outline" className="w-full justify-start rounded-full">
-              <a href={`mailto:${property?.contact_email ?? "hello@estatesrw.com"}`}>
-                <Mail className="mr-2 size-4" /> {property?.contact_email ?? "hello@estatesrw.com"}
+              <a href={`tel:${CONTACT.phone}`}>
+                <Phone className="mr-2 size-4" /> {CONTACT.phoneDisplay}
               </a>
             </Button>
+            <Button asChild variant="outline" className="w-full justify-start rounded-full">
+              <a href={`mailto:${property?.contact_email ?? CONTACT.email}`}>
+                <Mail className="mr-2 size-4" /> {property?.contact_email ?? CONTACT.email}
+              </a>
+            </Button>
+          </div>
+          <div className="mt-8 border-t border-border pt-6">
+            <h3 className="text-sm font-semibold">Getting to Lake Muhazi</h3>
+            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
+              <li>Kigali → Ikigonyi Round House: roughly 1 hour by road via Rwamagana.</li>
+              <li>Kigali International Airport: about 1 hour 15 minutes.</li>
+              <li>Akagera National Park: around 1 hour 30 minutes east.</li>
+              <li>Airport pickup and private transfers can be arranged on request.</li>
+            </ul>
           </div>
         </div>
       </section>

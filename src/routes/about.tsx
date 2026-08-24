@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { useSiteContent } from "@/lib/property";
+import { SITE_URL, useSiteContent } from "@/lib/property";
 import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
@@ -14,7 +14,11 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: "About Ikigonyi Round House" },
       { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/about` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/about` }],
   }),
   component: AboutPage,
 });

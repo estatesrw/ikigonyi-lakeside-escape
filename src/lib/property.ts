@@ -3,6 +3,15 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const PROPERTY_SLUG = "ikigonyi-round-house";
 
+export const CONTACT = {
+  phone: "+250791915459",
+  phoneDisplay: "0791 915 459",
+  email: "IkigonyiRoundHouse@hotmail.com",
+  instagram: "https://www.instagram.com/ikigonyiroundhouse/",
+} as const;
+
+export const SITE_URL = "https://ikigonyi-lakeside-escape.lovable.app";
+
 export type PropertyRow = {
   id: string;
   slug: string;
@@ -62,7 +71,7 @@ export function formatMoney(amount: number, currency = "USD") {
 }
 
 export function whatsappLink(number?: string | null, message?: string) {
-  const digits = (number ?? "").replace(/\D/g, "");
+  const digits = (number ?? CONTACT.phone).replace(/\D/g, "");
   const text = encodeURIComponent(message ?? "Hello, I'd like to ask about Ikigonyi Round House.");
   return `https://wa.me/${digits}?text=${text}`;
 }

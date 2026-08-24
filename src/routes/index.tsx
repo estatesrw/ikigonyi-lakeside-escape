@@ -5,22 +5,31 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { BookingSearch } from "@/components/site/BookingSearch";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useSiteContent } from "@/lib/property";
+import { CONTACT, SITE_URL, useSiteContent } from "@/lib/property";
 import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
-  "Ikigonyi Round House is an African-style lakefront villa on Lake Muhazi, Rwamagana, Rwanda. Six bedrooms, up to twelve guests, a panoramic thatched terrace and a private chef on request.";
+  "Book Ikigonyi Round House — a private African-style lakefront villa on Lake Muhazi, Rwamagana, Rwanda, one hour from Kigali. Six bedrooms, twelve guests, thatched terrace and a private chef on request.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Ikigonyi Round House — Private Lakeside Retreat on Lake Muhazi, Rwanda" },
+      { title: "Lake Muhazi Villa Rwanda | Ikigonyi Round House Lakeside Stay" },
       { name: "description", content: DESCRIPTION },
+      {
+        name: "keywords",
+        content:
+          "Lake Muhazi accommodation, Lake Muhazi hotels, where to stay Lake Muhazi, Rwamagana villa, lakeside villa Rwanda, weekend getaway near Kigali, Rwanda holiday rental, group retreat Rwanda",
+      },
       { property: "og:title", content: "Ikigonyi Round House — Lake Muhazi, Rwanda" },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL + "/" },
+      { property: "og:image", content: SITE_URL + photos.exterior },
+      { name: "twitter:image", content: SITE_URL + photos.exterior },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: SITE_URL + "/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -29,20 +38,78 @@ export const Route = createFileRoute("/")({
           "@type": "LodgingBusiness",
           name: "Ikigonyi Round House",
           description: DESCRIPTION,
+          url: SITE_URL,
+          image: [photos.exterior, photos.terrace, photos.living].map((p) => SITE_URL + p),
+          telephone: CONTACT.phone,
+          email: CONTACT.email,
+          priceRange: "$$",
+          sameAs: [CONTACT.instagram],
           address: {
             "@type": "PostalAddress",
             addressLocality: "Rwamagana",
             addressRegion: "Eastern Province",
             addressCountry: "RW",
           },
+          geo: { "@type": "GeoCoordinates", latitude: -1.8833, longitude: 30.35 },
+          containedInPlace: { "@type": "LakeBodyOfWater", name: "Lake Muhazi" },
           numberOfRooms: 6,
           petsAllowed: true,
+          amenityFeature: AMENITY_FEATURES.map((name) => ({
+            "@type": "LocationFeatureSpecification",
+            name,
+            value: true,
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
         }),
       },
     ],
   }),
   component: HomePage,
 });
+
+const AMENITY_FEATURES = [
+  "Waterfront",
+  "Free parking",
+  "Wifi",
+  "Private chef on request",
+  "Fully equipped kitchen",
+  "Panoramic terrace",
+  "Pets allowed",
+];
+
+const FAQS = [
+  {
+    q: "Where can I stay on Lake Muhazi in Rwanda?",
+    a: "Ikigonyi Round House is a private lakefront villa on the shores of Lake Muhazi in Rwamagana, about an hour's drive from Kigali. The whole house is yours: six bedrooms, ten beds and up to twelve guests.",
+  },
+  {
+    q: "How far is Lake Muhazi from Kigali?",
+    a: "Lake Muhazi is roughly one hour by road from Kigali and about 1 hour 15 minutes from Kigali International Airport, making it one of the easiest weekend getaways from the city.",
+  },
+  {
+    q: "How many guests can Ikigonyi Round House host?",
+    a: "The property sleeps up to twelve guests across six bedrooms in two lakefront houses, with six bathrooms, a full kitchen and a panoramic thatched terrace.",
+  },
+  {
+    q: "What can you do at Lake Muhazi?",
+    a: "Guests enjoy boat rides, swimming and fishing on the lake, lakeside BBQs and private dinners with a chef on request, sunrise walks along the shoreline, and day trips to Akagera National Park.",
+  },
+  {
+    q: "How do I book Ikigonyi Round House?",
+    a: "Check availability on this website and send a booking request, or reach the team directly on WhatsApp at 0791 915 459 or by email at IkigonyiRoundHouse@hotmail.com.",
+  },
+];
 
 const AMENITIES = [
   "6 Bedrooms · 10 Beds",
@@ -359,6 +426,24 @@ function HomePage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="mx-auto max-w-4xl px-5 py-24 md:px-8">
+        <p className="eyebrow">Good to know</p>
+        <h2 className="display mt-4 text-4xl leading-tight md:text-5xl">
+          Staying at Lake Muhazi.
+        </h2>
+        <div className="mt-10 divide-y divide-border border-y border-border">
+          {FAQS.map((f) => (
+            <details key={f.q} className="group py-5">
+              <summary className="cursor-pointer list-none text-base font-medium marker:hidden">
+                {f.q}
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+            </details>
+          ))}
         </div>
       </section>
 

@@ -1,13 +1,12 @@
 import { MessageCircle } from "lucide-react";
-import { useProperty, whatsappLink } from "@/lib/property";
+import { CONTACT, useProperty, whatsappLink } from "@/lib/property";
 
 export function WhatsAppFab() {
   const { data: property } = useProperty();
-  if (!property?.whatsapp_number) return null;
 
   return (
     <a
-      href={whatsappLink(property.whatsapp_number)}
+      href={whatsappLink(property?.whatsapp_number ?? CONTACT.phone)}
       target="_blank"
       rel="noreferrer"
       aria-label="Chat with us on WhatsApp"
