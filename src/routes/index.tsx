@@ -5,7 +5,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { BookingSearch } from "@/components/site/BookingSearch";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useSiteContent } from "@/lib/property";
+import { CONTACT, SITE_URL, useSiteContent } from "@/lib/property";
 import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
