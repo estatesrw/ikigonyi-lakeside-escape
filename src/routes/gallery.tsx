@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/property";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -17,7 +18,11 @@ export const Route = createFileRoute("/gallery")({
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: "Gallery — Ikigonyi Round House" },
       { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/gallery` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/gallery` }],
   }),
   component: GalleryPage,
 });

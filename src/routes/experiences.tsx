@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { photos } from "@/lib/photos";
-import { useProperty } from "@/lib/property";
+import { SITE_URL, useProperty } from "@/lib/property";
 
 const DESCRIPTION =
   "Weekend getaways, lakeside BBQs, private gatherings, corporate retreats and lake experiences at Ikigonyi Round House on Lake Muhazi, Rwanda.";
@@ -28,7 +28,11 @@ export const Route = createFileRoute("/experiences")({
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: "Experiences at Ikigonyi Round House" },
       { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/experiences` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/experiences` }],
   }),
   component: ExperiencesPage,
 });
