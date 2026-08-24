@@ -12,3 +12,7 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /auth
+
+Sitemap: https://ikigonyi-lakeside-escape.lovable.app/sitemap.xml
