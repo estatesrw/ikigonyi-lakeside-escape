@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { CONTACT, SITE_URL, useProperty, whatsappLink } from "@/lib/property";
+import { CONTACT, SITE_URL, mapsEmbedUrl, mapsShareUrl, useProperty, whatsappLink } from "@/lib/property";
 
 const DESCRIPTION =
   "How to reach Ikigonyi Round House on Lake Muhazi, Rwamagana — about an hour from Kigali. Directions, drive times and arrival details for your lakeside stay in Rwanda.";
@@ -25,11 +25,7 @@ export const Route = createFileRoute("/location")({
 
 function LocationPage() {
   const { data: property } = useProperty();
-  const mapsUrl =
-    property?.google_maps_url ??
-    (property?.latitude && property?.longitude
-      ? `https://www.google.com/maps/search/?api=1&query=${property.latitude},${property.longitude}`
-      : "https://www.google.com/maps/search/?api=1&query=Lake+Muhazi+Rwanda");
+  const mapsUrl = mapsShareUrl(property);
 
   return (
     <SiteLayout>
@@ -40,14 +36,18 @@ function LocationPage() {
       />
 
       <section className="mx-auto grid max-w-7xl gap-10 px-5 pb-24 md:grid-cols-[1.4fr_1fr] md:px-8">
-        <div className="flex min-h-[360px] items-center justify-center rounded-3xl border border-dashed border-border bg-card">
-          <div className="max-w-sm px-8 text-center">
-            <MapPin className="mx-auto size-8 text-primary" />
-            <p className="mt-4 text-sm text-muted-foreground">
-              Interactive map placeholder. A manager can add the exact Google Maps link in
-              Dashboard → Settings, and it will appear here.
-            </p>
-            <Button asChild className="mt-6 rounded-full px-6">
+        <div className="overflow-hidden rounded-3xl border border-border bg-card">
+          <iframe
+            title="Map — Ikigonyi Round House, Lake Muhazi"
+            src={mapsEmbedUrl(property)}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+            className="h-[360px] w-full md:h-full md:min-h-[480px]"
+          />
+          <div className="flex items-center justify-between gap-4 px-6 py-4">
+            <p className="text-sm text-muted-foreground">Find us on Google Maps — Ikigonyi Round House.</p>
+            <Button asChild className="shrink-0 rounded-full px-6">
               <a href={mapsUrl} target="_blank" rel="noreferrer">
                 Get directions
               </a>
