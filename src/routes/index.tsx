@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { MapPin, Star } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { BookingSearch } from "@/components/site/BookingSearch";
+import { ReviewsSlider, type SiteReview } from "@/components/site/ReviewsSlider";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { CONTACT, SITE_URL, useSiteContent } from "@/lib/property";
+import { CONTACT, SITE_URL, mapsEmbedUrl, useProperty, useSiteContent } from "@/lib/property";
 import { photos } from "@/lib/photos";
 
 const DESCRIPTION =
@@ -135,6 +136,7 @@ const WHY = [
 
 function HomePage() {
   const { data: content } = useSiteContent();
+  const { data: property } = useProperty();
 
   const { data: experiences } = useQuery({
     queryKey: ["experiences"],
@@ -381,27 +383,7 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-5 py-24 md:px-8">
         <p className="eyebrow">Guests</p>
         <h2 className="display mt-4 text-4xl leading-tight md:text-5xl">What guests say.</h2>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {(reviews ?? []).map((r) => (
-            <figure key={r.id} className="rounded-3xl border border-border bg-card p-7">
-              <div className="flex gap-1" aria-label={`${r.rating} out of 5`}>
-                {Array.from({ length: r.rating }).map((_, i) => (
-                  <Star key={i} className="size-4 fill-accent text-accent" />
-                ))}
-              </div>
-              <blockquote className="mt-4 text-base leading-relaxed text-foreground">
-                “{r.body}”
-              </blockquote>
-              <figcaption className="mt-5 text-sm text-muted-foreground">
-                {r.author_name}
-                {r.author_location ? ` · ${r.author_location}` : ""}
-              </figcaption>
-            </figure>
-          ))}
-          {reviews?.length === 0 && (
-            <p className="text-sm text-muted-foreground">No reviews published yet.</p>
-          )}
-        </div>
+        <ReviewsSlider reviews={(reviews ?? []) as SiteReview[]} />
       </section>
 
       {/* LOCATION */}
@@ -418,13 +400,14 @@ function HomePage() {
               <Link to="/location">Get directions</Link>
             </Button>
           </div>
-          <div className="flex aspect-4/3 items-center justify-center rounded-3xl border border-dashed border-border bg-card text-center">
-            <div className="px-8">
-              <MapPin className="mx-auto size-7 text-primary" />
-              <p className="mt-3 text-sm text-muted-foreground">
-                Interactive map placeholder — connect Google Maps from the manager dashboard.
-              </p>
-            </div>
+          <div className="overflow-hidden rounded-3xl border border-border bg-card">
+            <iframe
+              title="Map — Ikigonyi Round House, Lake Muhazi"
+              src={mapsEmbedUrl(property)}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="aspect-4/3 w-full"
+            />
           </div>
         </div>
       </section>
@@ -445,6 +428,17 @@ function HomePage() {
             </details>
           ))}
         </div>
+        <p className="mt-8 text-sm text-muted-foreground">
+          Planning a trip? Read our guides to{" "}
+          <Link to="/stays-near-lake-muhazi" className="text-primary underline underline-offset-4">
+            stays near Lake Muhazi
+          </Link>{" "}
+          and{" "}
+          <Link to="/weekend-escapes-near-kigali" className="text-primary underline underline-offset-4">
+            weekend escapes near Kigali
+          </Link>
+          .
+        </p>
       </section>
 
       {/* FINAL CTA */}

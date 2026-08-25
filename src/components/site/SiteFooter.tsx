@@ -32,6 +32,8 @@ export function SiteFooter() {
               { to: "/gallery", label: "Gallery" },
               { to: "/about", label: "About" },
               { to: "/location", label: "Location" },
+              { to: "/stays-near-lake-muhazi", label: "Stays near Lake Muhazi" },
+              { to: "/weekend-escapes-near-kigali", label: "Weekend escapes near Kigali" },
             ].map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="text-muted-foreground hover:text-foreground">

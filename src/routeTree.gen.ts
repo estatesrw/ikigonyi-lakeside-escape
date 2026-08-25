@@ -19,6 +19,8 @@ import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LocationRouteImport } from './routes/location'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StayRouteImport } from './routes/stay'
+import { Route as StaysNearLakeMuhaziRouteImport } from './routes/stays-near-lake-muhazi'
+import { Route as WeekendEscapesNearKigaliRouteImport } from './routes/weekend-escapes-near-kigali'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBookingsRouteImport } from './routes/_authenticated/dashboard.bookings'
@@ -83,6 +85,17 @@ const StayRoute = StayRouteImport.update({
   path: '/stay',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaysNearLakeMuhaziRoute = StaysNearLakeMuhaziRouteImport.update({
+  id: '/stays-near-lake-muhazi',
+  path: '/stays-near-lake-muhazi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeekendEscapesNearKigaliRoute =
+  WeekendEscapesNearKigaliRouteImport.update({
+    id: '/weekend-escapes-near-kigali',
+    path: '/weekend-escapes-near-kigali',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -177,6 +190,8 @@ export interface FileRoutesByFullPath {
   '/location': typeof LocationRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
+  '/stays-near-lake-muhazi': typeof StaysNearLakeMuhaziRoute
+  '/weekend-escapes-near-kigali': typeof WeekendEscapesNearKigaliRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
@@ -202,6 +217,8 @@ export interface FileRoutesByTo {
   '/location': typeof LocationRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
+  '/stays-near-lake-muhazi': typeof StaysNearLakeMuhaziRoute
+  '/weekend-escapes-near-kigali': typeof WeekendEscapesNearKigaliRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
   '/dashboard/channels': typeof AuthenticatedDashboardChannelsRoute
@@ -228,6 +245,8 @@ export interface FileRoutesById {
   '/location': typeof LocationRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
+  '/stays-near-lake-muhazi': typeof StaysNearLakeMuhaziRoute
+  '/weekend-escapes-near-kigali': typeof WeekendEscapesNearKigaliRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/_authenticated/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
@@ -255,6 +274,8 @@ export interface FileRouteTypes {
     | '/location'
     | '/sitemap.xml'
     | '/stay'
+    | '/stays-near-lake-muhazi'
+    | '/weekend-escapes-near-kigali'
     | '/dashboard'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
@@ -280,6 +301,8 @@ export interface FileRouteTypes {
     | '/location'
     | '/sitemap.xml'
     | '/stay'
+    | '/stays-near-lake-muhazi'
+    | '/weekend-escapes-near-kigali'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
     | '/dashboard/channels'
@@ -305,6 +328,8 @@ export interface FileRouteTypes {
     | '/location'
     | '/sitemap.xml'
     | '/stay'
+    | '/stays-near-lake-muhazi'
+    | '/weekend-escapes-near-kigali'
     | '/_authenticated/dashboard'
     | '/_authenticated/dashboard/bookings'
     | '/_authenticated/dashboard/calendar'
@@ -332,6 +357,8 @@ export interface RootRouteChildren {
   LocationRoute: typeof LocationRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StayRoute: typeof StayRoute
+  StaysNearLakeMuhaziRoute: typeof StaysNearLakeMuhaziRoute
+  WeekendEscapesNearKigaliRoute: typeof WeekendEscapesNearKigaliRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -404,6 +431,20 @@ declare module '@tanstack/react-router' {
       path: '/stay'
       fullPath: '/stay'
       preLoaderRoute: typeof StayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stays-near-lake-muhazi': {
+      id: '/stays-near-lake-muhazi'
+      path: '/stays-near-lake-muhazi'
+      fullPath: '/stays-near-lake-muhazi'
+      preLoaderRoute: typeof StaysNearLakeMuhaziRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weekend-escapes-near-kigali': {
+      id: '/weekend-escapes-near-kigali'
+      path: '/weekend-escapes-near-kigali'
+      fullPath: '/weekend-escapes-near-kigali'
+      preLoaderRoute: typeof WeekendEscapesNearKigaliRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -567,6 +608,8 @@ const rootRouteChildren: RootRouteChildren = {
   LocationRoute: LocationRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StayRoute: StayRoute,
+  StaysNearLakeMuhaziRoute: StaysNearLakeMuhaziRoute,
+  WeekendEscapesNearKigaliRoute: WeekendEscapesNearKigaliRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
