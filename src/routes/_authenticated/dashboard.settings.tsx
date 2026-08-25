@@ -130,6 +130,14 @@ function SettingsPage() {
               onChange={(e) => setForm({ ...form, instagram_url: e.target.value })}
             />
           </Fld>
+          <Fld label="Google Maps URL">
+            <Input
+              value={v("google_maps_url")}
+              disabled={!access.canManage}
+              placeholder="https://share.google/…"
+              onChange={(e) => setForm({ ...form, google_maps_url: e.target.value })}
+            />
+          </Fld>
           <Fld label="Description" className="sm:col-span-2">
             <Textarea
               rows={4}

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MapPin } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { BookingSearch } from "@/components/site/BookingSearch";
-import { ReviewsSlider } from "@/components/site/ReviewsSlider";
+import { ReviewsSlider, type SiteReview } from "@/components/site/ReviewsSlider";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { CONTACT, SITE_URL, mapsEmbedUrl, useProperty, useSiteContent } from "@/lib/property";
@@ -383,7 +383,7 @@ function HomePage() {
       <section className="mx-auto max-w-7xl px-5 py-24 md:px-8">
         <p className="eyebrow">Guests</p>
         <h2 className="display mt-4 text-4xl leading-tight md:text-5xl">What guests say.</h2>
-        <ReviewsSlider reviews={(reviews ?? []) as never} />
+        <ReviewsSlider reviews={(reviews ?? []) as SiteReview[]} />
       </section>
 
       {/* LOCATION */}
