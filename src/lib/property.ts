@@ -76,6 +76,28 @@ export function whatsappLink(number?: string | null, message?: string) {
   return `https://wa.me/${digits}?text=${text}`;
 }
 
+/** Public Google Maps link for the property (directions / business profile). */
+export function mapsShareUrl(property?: Pick<PropertyRow, "google_maps_url" | "latitude" | "longitude"> | null) {
+  if (property?.google_maps_url) return property.google_maps_url;
+  if (property?.latitude && property?.longitude) {
+    return `https://www.google.com/maps/search/?api=1&query=${property.latitude},${property.longitude}`;
+  }
+  return "https://www.google.com/maps/search/?api=1&query=Ikigonyi+Round+House+Rwamagana";
+}
+
+/** Embeddable Google Maps iframe URL. Share links can't be iframed, so embed by place query/coords. */
+export function mapsEmbedUrl(
+  property?: Pick<PropertyRow, "name" | "location" | "latitude" | "longitude"> | null,
+) {
+  if (property?.latitude && property?.longitude) {
+    return `https://www.google.com/maps?q=${property.latitude},${property.longitude}&z=14&output=embed`;
+  }
+  const q = encodeURIComponent(
+    [property?.name ?? "Ikigonyi Round House", property?.location ?? "Lake Muhazi, Rwamagana, Rwanda"].join(", "),
+  );
+  return `https://www.google.com/maps?q=${q}&z=13&output=embed`;
+}
+
 export function nightsBetween(checkIn: string, checkOut: string) {
   const a = new Date(checkIn + "T00:00:00");
   const b = new Date(checkOut + "T00:00:00");
