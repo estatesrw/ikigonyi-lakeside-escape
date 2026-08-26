@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logoMarkAsset from "@/assets/ikigonyi-mark.png.asset.json";
+import { publicMediaUrl } from "@/lib/photos";
+
+const logoMark = { url: publicMediaUrl(logoMarkAsset.url) };
 
 const NAV = [
   { to: "/stay", label: "Stay" },
