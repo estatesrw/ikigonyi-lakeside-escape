@@ -35,22 +35,31 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8">
-        <Link to="/" className="group flex flex-col leading-none" aria-label="Ikigonyi Round House">
-          <span
-            className={cn(
-              "display text-lg tracking-tight transition-colors md:text-xl",
-              solid ? "text-foreground" : "text-primary-foreground",
-            )}
-          >
-            Ikigonyi Round House
-          </span>
-          <span
-            className={cn(
-              "mt-1 text-[0.62rem] uppercase tracking-[0.28em] transition-colors",
-              solid ? "text-muted-foreground" : "text-primary-foreground/75",
-            )}
-          >
-            Lake Muhazi
+        <Link to="/" className="group flex items-center gap-3" aria-label="Ikigonyi Round House">
+          <img
+            src={logoMark.url}
+            alt="Ikigonyi Round House logo"
+            className="size-10 shrink-0 rounded-full object-cover md:size-11"
+            width={44}
+            height={44}
+          />
+          <span className="flex flex-col leading-none">
+            <span
+              className={cn(
+                "display text-lg tracking-tight transition-colors md:text-xl",
+                solid ? "text-foreground" : "text-primary-foreground",
+              )}
+            >
+              Ikigonyi Round House
+            </span>
+            <span
+              className={cn(
+                "mt-1 text-[0.62rem] uppercase tracking-[0.28em] transition-colors",
+                solid ? "text-muted-foreground" : "text-primary-foreground/75",
+              )}
+            >
+              Lake Muhazi
+            </span>
           </span>
         </Link>
 
