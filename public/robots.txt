@@ -15,4 +15,4 @@ Allow: /
 Disallow: /dashboard
 Disallow: /auth
 
-Sitemap: https://ikigonyi-lakeside-escape.lovable.app/sitemap.xml
+Sitemap: https://ikigonyi.com/sitemap.xml

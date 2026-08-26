@@ -21,7 +21,7 @@ import bathroomShower from "@/assets/listing/bathroom-shower.jpg.asset.json";
 
 // Lovable Assets use a platform-served path. Keep the delivery origin explicit so
 // the same images continue to work when the built site is hosted on another domain.
-export const ASSET_ORIGIN = "https://ikigonyi-lakeside-escape.lovable.app";
+export const ASSET_ORIGIN = "https://ikigonyi.lovable.app";
 
 export function publicMediaUrl(url?: string | null) {
   if (!url) return "";
