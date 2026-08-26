@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { photos } from "@/lib/photos";
+import { photos, publicMediaUrl } from "@/lib/photos";
 import { SITE_URL, useProperty } from "@/lib/property";
 
 const DESCRIPTION =
@@ -98,7 +98,7 @@ function ExperiencesPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src={exp.image_url ?? images[i % images.length]}
+                  src={publicMediaUrl(exp.image_url) || images[i % images.length]}
                   alt={exp.title}
                   loading="lazy"
                   width={1280}

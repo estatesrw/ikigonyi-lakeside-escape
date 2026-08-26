@@ -19,26 +19,35 @@ import bedroomAnnexe from "@/assets/listing/bedroom-annexe.jpg.asset.json";
 import bathroomStone from "@/assets/listing/bathroom-stone.jpg.asset.json";
 import bathroomShower from "@/assets/listing/bathroom-shower.jpg.asset.json";
 
+// Lovable Assets use a platform-served path. Keep the delivery origin explicit so
+// the same images continue to work when the built site is hosted on another domain.
+export const ASSET_ORIGIN = "https://ikigonyi.lovable.app";
+
+export function publicMediaUrl(url?: string | null) {
+  if (!url) return "";
+  return url.startsWith("/__l5e/assets-v1/") ? `${ASSET_ORIGIN}${url}` : url;
+}
+
 export const photos = {
-  exterior: roundHouseExterior.url,
-  exteriorNight: roundHouseNight.url,
-  annexeNight: annexeNight.url,
-  landscape: propertyLandscape.url,
-  terrace: terraceLake.url,
-  lake: lakeView.url,
-  living: livingRoom.url,
-  livingLounge: livingRoomLounge.url,
-  livingStairs: livingStairs.url,
-  dining: diningKitchen.url,
-  thatch: thatchedRoof.url,
-  bedroomKing: bedroomKing.url,
-  bedroomCanopy: bedroomCanopy.url,
-  bedroomTwin: bedroomTwin.url,
-  bedroomLamplight: bedroomLamplight.url,
-  bedroomDarkWood: bedroomDarkWood.url,
-  bedroomAnnexe: bedroomAnnexe.url,
-  bathroomStone: bathroomStone.url,
-  bathroomShower: bathroomShower.url,
+  exterior: publicMediaUrl(roundHouseExterior.url),
+  exteriorNight: publicMediaUrl(roundHouseNight.url),
+  annexeNight: publicMediaUrl(annexeNight.url),
+  landscape: publicMediaUrl(propertyLandscape.url),
+  terrace: publicMediaUrl(terraceLake.url),
+  lake: publicMediaUrl(lakeView.url),
+  living: publicMediaUrl(livingRoom.url),
+  livingLounge: publicMediaUrl(livingRoomLounge.url),
+  livingStairs: publicMediaUrl(livingStairs.url),
+  dining: publicMediaUrl(diningKitchen.url),
+  thatch: publicMediaUrl(thatchedRoof.url),
+  bedroomKing: publicMediaUrl(bedroomKing.url),
+  bedroomCanopy: publicMediaUrl(bedroomCanopy.url),
+  bedroomTwin: publicMediaUrl(bedroomTwin.url),
+  bedroomLamplight: publicMediaUrl(bedroomLamplight.url),
+  bedroomDarkWood: publicMediaUrl(bedroomDarkWood.url),
+  bedroomAnnexe: publicMediaUrl(bedroomAnnexe.url),
+  bathroomStone: publicMediaUrl(bathroomStone.url),
+  bathroomShower: publicMediaUrl(bathroomShower.url),
 } as const;
 
 export type GalleryCategory =

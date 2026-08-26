@@ -10,7 +10,7 @@ export const CONTACT = {
   instagram: "https://www.instagram.com/ikigonyiroundhouse/",
 } as const;
 
-export const SITE_URL = "https://ikigonyi-lakeside-escape.lovable.app";
+export const SITE_URL = "https://ikigonyi.com";
 
 export type PropertyRow = {
   id: string;

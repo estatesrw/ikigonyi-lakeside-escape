@@ -193,3 +193,71 @@
 @utility slow-zoom {
   animation: slow-zoom 14s ease-out both;
 }
+
+.hero-reveal {
+  opacity: 0;
+  animation: hero-reveal 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-reveal-kicker { animation-delay: 0.15s; }
+.hero-reveal-title {
+  animation-delay: 0.32s;
+  text-shadow: 0 12px 40px oklch(0.12 0.01 70 / 0.38);
+}
+.hero-reveal-copy { animation-delay: 0.52s; }
+.hero-reveal-actions { animation-delay: 0.7s; }
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+    filter: blur(9px);
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+.gallery-marquee {
+  overflow: hidden;
+}
+
+.gallery-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  will-change: transform;
+}
+
+.gallery-slide {
+  width: clamp(15rem, 28vw, 24rem);
+  aspect-ratio: 16 / 10;
+}
+
+.gallery-track-left { animation: gallery-left 42s linear infinite; }
+.gallery-track-right { animation: gallery-right 46s linear infinite; }
+
+@keyframes gallery-left {
+  to { transform: translateX(calc(-50% - 0.5rem)); }
+}
+
+@keyframes gallery-right {
+  from { transform: translateX(calc(-50% - 0.5rem)); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal {
+    opacity: 1;
+    animation: none;
+    filter: none;
+    transform: none;
+  }
+
+  .gallery-track-left,
+  .gallery-track-right {
+    animation-play-state: paused;
+  }
+}

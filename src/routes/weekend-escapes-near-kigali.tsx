@@ -47,9 +47,9 @@ export const Route = createFileRoute("/weekend-escapes-near-kigali")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/weekend-escapes-near-kigali` },
-      { property: "og:image", content: SITE_URL + photos.terrace },
+      { property: "og:image", content: photos.terrace },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: SITE_URL + photos.terrace },
+      { name: "twitter:image", content: photos.terrace },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/weekend-escapes-near-kigali` }],
     scripts: [
