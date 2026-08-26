@@ -67,6 +67,24 @@ export const photos = {
   bedroomAnnexe: publicMediaUrl(bedroomAnnexe.url),
   bathroomStone: publicMediaUrl(bathroomStone.url),
   bathroomShower: publicMediaUrl(bathroomShower.url),
+  // Official PointImage photography
+  realExterior: publicMediaUrl(pxExteriorThatch.url),
+  realExteriorDriveway: publicMediaUrl(pxExteriorDriveway.url),
+  realBalconyLake: publicMediaUrl(pxBalconyLake.url),
+  realTerraceLake: publicMediaUrl(pxTerraceLakeGreen.url),
+  realLakeSteps: publicMediaUrl(pxLakeSteps.url),
+  realLakeBoat: publicMediaUrl(pxLakeBoatSteps.url),
+  realLakeBw: publicMediaUrl(pxLakeViewBw.url),
+  realLandscapeBw: publicMediaUrl(pxLandscapeBw.url),
+  realBedroomCarved: publicMediaUrl(pxBedroomCarved.url),
+  realBedroomWhite: publicMediaUrl(pxBedroomWhite.url),
+  realBedroomTwinWarm: publicMediaUrl(pxBedroomTwinWarm.url),
+  realBedroomWoven: publicMediaUrl(pxBedroomWoven.url),
+  realBedroomWarm: publicMediaUrl(pxBedroomWarm.url),
+  realLampImigongo: publicMediaUrl(pxLampImigongo.url),
+  realLampBw: publicMediaUrl(pxLampBw.url),
+  realShowerGrey: publicMediaUrl(pxShowerGrey.url),
+  realShowerWarm: publicMediaUrl(pxShowerWarm.url),
 } as const;
 
 export type GalleryCategory =
