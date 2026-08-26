@@ -26,8 +26,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { property: "og:url", content: SITE_URL + "/" },
-      { property: "og:image", content: photos.exterior },
-      { name: "twitter:image", content: photos.exterior },
+      { property: "og:image", content: photos.realExterior },
+      { name: "twitter:image", content: photos.realExterior },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: SITE_URL + "/" }],
@@ -183,7 +183,7 @@ function HomePage() {
       {/* HERO */}
       <section className="relative flex min-h-[92svh] items-end overflow-hidden">
         <img
-          src={photos.exterior}
+          src={photos.realExterior}
           alt="The thatched stone round house above Lake Muhazi"
           width={1920}
           height={1088}
