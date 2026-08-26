@@ -166,16 +166,16 @@ function HomePage() {
 
   const experienceImages = [photos.terrace, photos.dining, photos.living, photos.livingStairs, photos.lake];
   const galleryRows = [
-    photos.exteriorNight,
-    photos.livingLounge,
-    photos.bedroomCanopy,
-    photos.thatch,
-    photos.terrace,
-    photos.bedroomKing,
-    photos.lake,
-    photos.dining,
-    photos.annexeNight,
-    photos.bedroomTwin,
+    photos.realExterior,
+    photos.realBalconyLake,
+    photos.realBedroomCarved,
+    photos.realLakeSteps,
+    photos.realBedroomWoven,
+    photos.realExteriorDriveway,
+    photos.realLakeBoat,
+    photos.realBedroomTwinWarm,
+    photos.realLampImigongo,
+    photos.realShowerWarm,
   ];
 
   return (
