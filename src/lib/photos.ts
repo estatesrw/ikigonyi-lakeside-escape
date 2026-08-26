@@ -102,6 +102,108 @@ export const galleryPhotos: {
   alt_text: string;
 }[] = [
   {
+    id: "p1",
+    category: "House",
+    image_url: photos.realExterior,
+    alt_text: "Ikigonyi Round House with its thatched roof and stone walls",
+  },
+  {
+    id: "p2",
+    category: "House",
+    image_url: photos.realExteriorDriveway,
+    alt_text: "The round house seen from the driveway",
+  },
+  {
+    id: "p3",
+    category: "Lake",
+    image_url: photos.realBalconyLake,
+    alt_text: "Lake Muhazi seen from the upper balcony",
+  },
+  {
+    id: "p4",
+    category: "Outdoor",
+    image_url: photos.realTerraceLake,
+    alt_text: "Green lawns rolling down to Lake Muhazi",
+  },
+  {
+    id: "p5",
+    category: "Outdoor",
+    image_url: photos.realLakeSteps,
+    alt_text: "Stone steps leading down towards the lake shore",
+  },
+  {
+    id: "p6",
+    category: "Lake",
+    image_url: photos.realLakeBoat,
+    alt_text: "A boat moored on Lake Muhazi below the property",
+  },
+  {
+    id: "p7",
+    category: "Lake",
+    image_url: photos.realLakeBw,
+    alt_text: "Black and white view over Lake Muhazi from the terrace",
+  },
+  {
+    id: "p8",
+    category: "Lake",
+    image_url: photos.realLandscapeBw,
+    alt_text: "Monochrome landscape of the lake and surrounding hills",
+  },
+  {
+    id: "p9",
+    category: "Bedrooms",
+    image_url: photos.realBedroomCarved,
+    alt_text: "Bedroom with hand-carved wooden bed and Imigongo textiles",
+  },
+  {
+    id: "p10",
+    category: "Bedrooms",
+    image_url: photos.realBedroomWhite,
+    alt_text: "Bright bedroom with carved headboard and wardrobe",
+  },
+  {
+    id: "p11",
+    category: "Bedrooms",
+    image_url: photos.realBedroomTwinWarm,
+    alt_text: "Twin bedroom with warm lamplight and patterned throws",
+  },
+  {
+    id: "p12",
+    category: "Bedrooms",
+    image_url: photos.realBedroomWoven,
+    alt_text: "Bedroom beneath the woven ceiling of the round house",
+  },
+  {
+    id: "p13",
+    category: "Bedrooms",
+    image_url: photos.realBedroomWarm,
+    alt_text: "Double bedroom with carved bed frame and warm light",
+  },
+  {
+    id: "p14",
+    category: "Living Spaces",
+    image_url: photos.realLampImigongo,
+    alt_text: "Bedside lamp with Imigongo-inspired pattern on a wooden nightstand",
+  },
+  {
+    id: "p15",
+    category: "Living Spaces",
+    image_url: photos.realLampBw,
+    alt_text: "Nightstand and patterned lamp in black and white",
+  },
+  {
+    id: "p16",
+    category: "House",
+    image_url: photos.realShowerGrey,
+    alt_text: "Walk-in shower with grey stone tiling",
+  },
+  {
+    id: "p17",
+    category: "House",
+    image_url: photos.realShowerWarm,
+    alt_text: "Ensuite rain shower with warm stone tiling",
+  },
+  {
     id: "g1",
     category: "House",
     image_url: photos.exterior,
