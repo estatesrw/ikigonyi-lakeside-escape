@@ -50,9 +50,9 @@ export const Route = createFileRoute("/stays-near-lake-muhazi")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/stays-near-lake-muhazi` },
-      { property: "og:image", content: SITE_URL + photos.lake },
+      { property: "og:image", content: photos.lake },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: SITE_URL + photos.lake },
+      { name: "twitter:image", content: photos.lake },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/stays-near-lake-muhazi` }],
     scripts: [

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { photos } from "@/lib/photos";
+import { photos, publicMediaUrl } from "@/lib/photos";
 import { BookingSearch } from "@/components/site/BookingSearch";
 
 const DESCRIPTION =
@@ -73,7 +73,7 @@ function StayPage() {
           {(rooms ?? []).map((room, i) => (
             <article key={room.id} className="overflow-hidden rounded-3xl border border-border bg-card">
               <img
-                src={room.image_url ?? images[i % images.length]}
+                src={publicMediaUrl(room.image_url) || images[i % images.length]}
                 alt={room.name}
                 loading="lazy"
                 width={1280}

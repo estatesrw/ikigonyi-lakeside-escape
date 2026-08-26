@@ -7,7 +7,7 @@ import { ReviewsSlider, type SiteReview } from "@/components/site/ReviewsSlider"
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { CONTACT, SITE_URL, mapsEmbedUrl, useProperty, useSiteContent } from "@/lib/property";
-import { photos } from "@/lib/photos";
+import { photos, publicMediaUrl } from "@/lib/photos";
 
 const DESCRIPTION =
   "Book Ikigonyi Round House — a private African-style lakefront villa on Lake Muhazi, Rwamagana, Rwanda, one hour from Kigali. Six bedrooms, twelve guests, thatched terrace and a private chef on request.";
@@ -26,8 +26,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { property: "og:url", content: SITE_URL + "/" },
-      { property: "og:image", content: SITE_URL + photos.exterior },
-      { name: "twitter:image", content: SITE_URL + photos.exterior },
+      { property: "og:image", content: photos.exterior },
+      { name: "twitter:image", content: photos.exterior },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: SITE_URL + "/" }],
@@ -40,7 +40,7 @@ export const Route = createFileRoute("/")({
           name: "Ikigonyi Round House",
           description: DESCRIPTION,
           url: SITE_URL,
-          image: [photos.exterior, photos.terrace, photos.living].map((p) => SITE_URL + p),
+          image: [photos.exterior, photos.terrace, photos.living],
           telephone: CONTACT.phone,
           email: CONTACT.email,
           priceRange: "$$",
@@ -165,6 +165,18 @@ function HomePage() {
   });
 
   const experienceImages = [photos.terrace, photos.dining, photos.living, photos.livingStairs, photos.lake];
+  const galleryRows = [
+    photos.exteriorNight,
+    photos.livingLounge,
+    photos.bedroomCanopy,
+    photos.thatch,
+    photos.terrace,
+    photos.bedroomKing,
+    photos.lake,
+    photos.dining,
+    photos.annexeNight,
+    photos.bedroomTwin,
+  ];
 
   return (
     <SiteLayout overlayHeader>
@@ -178,18 +190,18 @@ function HomePage() {
           className="slow-zoom absolute inset-0 size-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-ink/40" />
-        <div className="relative mx-auto w-full max-w-7xl px-5 pb-16 pt-32 md:px-8 md:pb-24">
-          <p className="fade-up inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-primary-foreground/85">
+        <div className="relative mx-auto flex w-full max-w-7xl flex-col items-center px-5 pb-16 pt-32 text-center md:px-8 md:pb-24">
+          <p className="hero-reveal hero-reveal-kicker inline-flex items-center justify-center gap-2 text-xs uppercase tracking-[0.28em] text-primary-foreground/85">
             <MapPin className="size-3.5" /> Lake Muhazi, Rwanda
           </p>
-          <h1 className="display fade-up mt-6 max-w-4xl text-5xl leading-[1.02] text-primary-foreground md:text-8xl">
+          <h1 className="display hero-reveal hero-reveal-title mt-6 max-w-4xl text-5xl leading-[1.02] text-primary-foreground md:text-8xl">
             {content?.["hero_headline"] ?? "African-style villa on Lake Muhazi."}
           </h1>
-          <p className="fade-up mt-6 max-w-xl text-base leading-relaxed text-primary-foreground/85 md:text-lg">
+          <p className="hero-reveal hero-reveal-copy mt-6 max-w-xl text-base leading-relaxed text-primary-foreground/85 md:text-lg">
             {content?.["hero_subheadline"] ??
               "A private lakeside retreat designed for slow mornings, shared moments and unforgettable weekends."}
           </p>
-          <div className="fade-up mt-9 flex flex-wrap gap-3">
+          <div className="hero-reveal hero-reveal-actions mt-9 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="rounded-full px-7">
               <a href="#availability">Check availability</a>
             </Button>
@@ -289,7 +301,7 @@ function HomePage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src={exp.image_url ?? experienceImages[i % experienceImages.length]}
+                  src={publicMediaUrl(exp.image_url) || experienceImages[i % experienceImages.length]}
                   alt={exp.title}
                   loading="lazy"
                   width={1280}
@@ -312,8 +324,8 @@ function HomePage() {
       </section>
 
       {/* GALLERY TEASER */}
-      <section className="bg-secondary/50">
-        <div className="mx-auto max-w-7xl px-5 py-24 md:px-8">
+      <section className="overflow-hidden bg-secondary/50 py-24">
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
           <div className="flex items-end justify-between gap-6">
             <div>
               <p className="eyebrow">Gallery</p>
@@ -325,19 +337,32 @@ function HomePage() {
               <Link to="/gallery">View gallery</Link>
             </Button>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[photos.exteriorNight, photos.livingLounge, photos.bedroomCanopy, photos.thatch].map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt="Ikigonyi Round House"
-                loading="lazy"
-                width={1280}
-                height={960}
-                className="aspect-3/4 w-full rounded-2xl object-cover"
-              />
-            ))}
-          </div>
+        </div>
+        <div className="mt-10 space-y-4" aria-label="Ikigonyi Round House photo highlights">
+          {[galleryRows, [...galleryRows].reverse()].map((row, rowIndex) => (
+            <div key={rowIndex} className="gallery-marquee">
+              <div className={rowIndex === 0 ? "gallery-track gallery-track-left" : "gallery-track gallery-track-right"}>
+                {[...row, ...row].map((src, i) => (
+                  <Link
+                    key={`${rowIndex}-${i}`}
+                    to="/gallery"
+                    aria-hidden={i >= row.length}
+                    tabIndex={i >= row.length ? -1 : undefined}
+                    className="gallery-slide shrink-0 overflow-hidden rounded-2xl"
+                  >
+                    <img
+                      src={src}
+                      alt={i < row.length ? "Ikigonyi Round House on Lake Muhazi" : ""}
+                      loading="lazy"
+                      width={640}
+                      height={420}
+                      className="size-full object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

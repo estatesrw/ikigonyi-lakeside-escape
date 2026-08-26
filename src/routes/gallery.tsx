@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
-import { galleryPhotos } from "@/lib/photos";
+import { galleryPhotos, publicMediaUrl } from "@/lib/photos";
 
 const DESCRIPTION =
   "Photography of Ikigonyi Round House — the house, bedrooms, living spaces, the lake, outdoor areas and experiences on Lake Muhazi, Rwanda.";
@@ -101,8 +101,8 @@ function GalleryPage() {
             item.media_type === "video" ? (
               <figure key={item.id} className="overflow-hidden rounded-2xl">
                 <video
-                  src={item.video_url ?? undefined}
-                  poster={item.image_url || undefined}
+                  src={publicMediaUrl(item.video_url) || undefined}
+                  poster={publicMediaUrl(item.image_url) || undefined}
                   controls
                   playsInline
                   preload="metadata"
@@ -123,7 +123,7 @@ function GalleryPage() {
                 aria-label={`Open image: ${item.alt_text ?? "Ikigonyi Round House"}`}
               >
                 <img
-                  src={item.image_url}
+                  src={publicMediaUrl(item.image_url)}
                   alt={item.alt_text ?? "Ikigonyi Round House"}
                   loading="lazy"
                   width={1280}
@@ -158,7 +158,7 @@ function GalleryPage() {
             <X className="size-6" />
           </button>
           <img
-            src={lightbox.image_url}
+            src={publicMediaUrl(lightbox.image_url)}
             alt={lightbox.alt_text ?? "Ikigonyi Round House"}
             className="max-h-[88svh] max-w-full rounded-xl object-contain"
           />

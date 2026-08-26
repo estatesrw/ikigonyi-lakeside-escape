@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Fld } from "./dashboard.bookings";
+import { publicMediaUrl } from "@/lib/photos";
 
 export const Route = createFileRoute("/_authenticated/dashboard/content")({
   component: ContentPage,
@@ -271,15 +272,15 @@ function ContentPage() {
                   >
                     {m.media_type === "video" ? (
                       <video
-                        src={m.video_url ?? undefined}
-                        poster={m.image_url || undefined}
+                        src={publicMediaUrl(m.video_url) || undefined}
+                        poster={publicMediaUrl(m.image_url) || undefined}
                         controls
                         preload="metadata"
                         className="aspect-[4/3] w-full bg-muted object-cover"
                       />
                     ) : (
                       <img
-                        src={m.image_url}
+                        src={publicMediaUrl(m.image_url)}
                         alt={m.alt_text ?? ""}
                         loading="lazy"
                         className="aspect-[4/3] w-full object-cover"
