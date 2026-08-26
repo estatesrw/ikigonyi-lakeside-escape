@@ -19,6 +19,25 @@ import bedroomAnnexe from "@/assets/listing/bedroom-annexe.jpg.asset.json";
 import bathroomStone from "@/assets/listing/bathroom-stone.jpg.asset.json";
 import bathroomShower from "@/assets/listing/bathroom-shower.jpg.asset.json";
 
+// Official photography by PointImage (Pixieset delivery, August 2026).
+import pxBalconyLake from "@/assets/pixieset/balcony-lake-view.jpg.asset.json";
+import pxBedroomCarved from "@/assets/pixieset/bedroom-carved-bed.jpg.asset.json";
+import pxLakeSteps from "@/assets/pixieset/lake-steps.jpg.asset.json";
+import pxLakeViewBw from "@/assets/pixieset/lake-view-bw.jpg.asset.json";
+import pxBedroomWhite from "@/assets/pixieset/bedroom-white.jpg.asset.json";
+import pxLandscapeBw from "@/assets/pixieset/landscape-bw.jpg.asset.json";
+import pxBedroomTwinWarm from "@/assets/pixieset/bedroom-twin-warm.jpg.asset.json";
+import pxTerraceLakeGreen from "@/assets/pixieset/terrace-lake-green.jpg.asset.json";
+import pxLampImigongo from "@/assets/pixieset/lamp-imigongo.jpg.asset.json";
+import pxBedroomWoven from "@/assets/pixieset/bedroom-woven-ceiling.jpg.asset.json";
+import pxExteriorThatch from "@/assets/pixieset/exterior-thatch.jpg.asset.json";
+import pxShowerGrey from "@/assets/pixieset/shower-grey.jpg.asset.json";
+import pxLakeBoatSteps from "@/assets/pixieset/lake-boat-steps.jpg.asset.json";
+import pxLampBw from "@/assets/pixieset/lamp-bw.jpg.asset.json";
+import pxBedroomWarm from "@/assets/pixieset/bedroom-warm.jpg.asset.json";
+import pxShowerWarm from "@/assets/pixieset/shower-warm.jpg.asset.json";
+import pxExteriorDriveway from "@/assets/pixieset/exterior-driveway.jpg.asset.json";
+
 // Lovable Assets use a platform-served path. Keep the delivery origin explicit so
 // the same images continue to work when the built site is hosted on another domain.
 export const ASSET_ORIGIN = "https://ikigonyi.lovable.app";
@@ -48,6 +67,24 @@ export const photos = {
   bedroomAnnexe: publicMediaUrl(bedroomAnnexe.url),
   bathroomStone: publicMediaUrl(bathroomStone.url),
   bathroomShower: publicMediaUrl(bathroomShower.url),
+  // Official PointImage photography
+  realExterior: publicMediaUrl(pxExteriorThatch.url),
+  realExteriorDriveway: publicMediaUrl(pxExteriorDriveway.url),
+  realBalconyLake: publicMediaUrl(pxBalconyLake.url),
+  realTerraceLake: publicMediaUrl(pxTerraceLakeGreen.url),
+  realLakeSteps: publicMediaUrl(pxLakeSteps.url),
+  realLakeBoat: publicMediaUrl(pxLakeBoatSteps.url),
+  realLakeBw: publicMediaUrl(pxLakeViewBw.url),
+  realLandscapeBw: publicMediaUrl(pxLandscapeBw.url),
+  realBedroomCarved: publicMediaUrl(pxBedroomCarved.url),
+  realBedroomWhite: publicMediaUrl(pxBedroomWhite.url),
+  realBedroomTwinWarm: publicMediaUrl(pxBedroomTwinWarm.url),
+  realBedroomWoven: publicMediaUrl(pxBedroomWoven.url),
+  realBedroomWarm: publicMediaUrl(pxBedroomWarm.url),
+  realLampImigongo: publicMediaUrl(pxLampImigongo.url),
+  realLampBw: publicMediaUrl(pxLampBw.url),
+  realShowerGrey: publicMediaUrl(pxShowerGrey.url),
+  realShowerWarm: publicMediaUrl(pxShowerWarm.url),
 } as const;
 
 export type GalleryCategory =
@@ -64,6 +101,108 @@ export const galleryPhotos: {
   image_url: string;
   alt_text: string;
 }[] = [
+  {
+    id: "p1",
+    category: "House",
+    image_url: photos.realExterior,
+    alt_text: "Ikigonyi Round House with its thatched roof and stone walls",
+  },
+  {
+    id: "p2",
+    category: "House",
+    image_url: photos.realExteriorDriveway,
+    alt_text: "The round house seen from the driveway",
+  },
+  {
+    id: "p3",
+    category: "Lake",
+    image_url: photos.realBalconyLake,
+    alt_text: "Lake Muhazi seen from the upper balcony",
+  },
+  {
+    id: "p4",
+    category: "Outdoor",
+    image_url: photos.realTerraceLake,
+    alt_text: "Green lawns rolling down to Lake Muhazi",
+  },
+  {
+    id: "p5",
+    category: "Outdoor",
+    image_url: photos.realLakeSteps,
+    alt_text: "Stone steps leading down towards the lake shore",
+  },
+  {
+    id: "p6",
+    category: "Lake",
+    image_url: photos.realLakeBoat,
+    alt_text: "A boat moored on Lake Muhazi below the property",
+  },
+  {
+    id: "p7",
+    category: "Lake",
+    image_url: photos.realLakeBw,
+    alt_text: "Black and white view over Lake Muhazi from the terrace",
+  },
+  {
+    id: "p8",
+    category: "Lake",
+    image_url: photos.realLandscapeBw,
+    alt_text: "Monochrome landscape of the lake and surrounding hills",
+  },
+  {
+    id: "p9",
+    category: "Bedrooms",
+    image_url: photos.realBedroomCarved,
+    alt_text: "Bedroom with hand-carved wooden bed and Imigongo textiles",
+  },
+  {
+    id: "p10",
+    category: "Bedrooms",
+    image_url: photos.realBedroomWhite,
+    alt_text: "Bright bedroom with carved headboard and wardrobe",
+  },
+  {
+    id: "p11",
+    category: "Bedrooms",
+    image_url: photos.realBedroomTwinWarm,
+    alt_text: "Twin bedroom with warm lamplight and patterned throws",
+  },
+  {
+    id: "p12",
+    category: "Bedrooms",
+    image_url: photos.realBedroomWoven,
+    alt_text: "Bedroom beneath the woven ceiling of the round house",
+  },
+  {
+    id: "p13",
+    category: "Bedrooms",
+    image_url: photos.realBedroomWarm,
+    alt_text: "Double bedroom with carved bed frame and warm light",
+  },
+  {
+    id: "p14",
+    category: "Living Spaces",
+    image_url: photos.realLampImigongo,
+    alt_text: "Bedside lamp with Imigongo-inspired pattern on a wooden nightstand",
+  },
+  {
+    id: "p15",
+    category: "Living Spaces",
+    image_url: photos.realLampBw,
+    alt_text: "Nightstand and patterned lamp in black and white",
+  },
+  {
+    id: "p16",
+    category: "House",
+    image_url: photos.realShowerGrey,
+    alt_text: "Walk-in shower with grey stone tiling",
+  },
+  {
+    id: "p17",
+    category: "House",
+    image_url: photos.realShowerWarm,
+    alt_text: "Ensuite rain shower with warm stone tiling",
+  },
   {
     id: "g1",
     category: "House",
