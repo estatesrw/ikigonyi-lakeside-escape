@@ -19,6 +19,25 @@ import bedroomAnnexe from "@/assets/listing/bedroom-annexe.jpg.asset.json";
 import bathroomStone from "@/assets/listing/bathroom-stone.jpg.asset.json";
 import bathroomShower from "@/assets/listing/bathroom-shower.jpg.asset.json";
 
+// Official photography by PointImage (Pixieset delivery, August 2026).
+import pxBalconyLake from "@/assets/pixieset/balcony-lake-view.jpg.asset.json";
+import pxBedroomCarved from "@/assets/pixieset/bedroom-carved-bed.jpg.asset.json";
+import pxLakeSteps from "@/assets/pixieset/lake-steps.jpg.asset.json";
+import pxLakeViewBw from "@/assets/pixieset/lake-view-bw.jpg.asset.json";
+import pxBedroomWhite from "@/assets/pixieset/bedroom-white.jpg.asset.json";
+import pxLandscapeBw from "@/assets/pixieset/landscape-bw.jpg.asset.json";
+import pxBedroomTwinWarm from "@/assets/pixieset/bedroom-twin-warm.jpg.asset.json";
+import pxTerraceLakeGreen from "@/assets/pixieset/terrace-lake-green.jpg.asset.json";
+import pxLampImigongo from "@/assets/pixieset/lamp-imigongo.jpg.asset.json";
+import pxBedroomWoven from "@/assets/pixieset/bedroom-woven-ceiling.jpg.asset.json";
+import pxExteriorThatch from "@/assets/pixieset/exterior-thatch.jpg.asset.json";
+import pxShowerGrey from "@/assets/pixieset/shower-grey.jpg.asset.json";
+import pxLakeBoatSteps from "@/assets/pixieset/lake-boat-steps.jpg.asset.json";
+import pxLampBw from "@/assets/pixieset/lamp-bw.jpg.asset.json";
+import pxBedroomWarm from "@/assets/pixieset/bedroom-warm.jpg.asset.json";
+import pxShowerWarm from "@/assets/pixieset/shower-warm.jpg.asset.json";
+import pxExteriorDriveway from "@/assets/pixieset/exterior-driveway.jpg.asset.json";
+
 // Lovable Assets use a platform-served path. Keep the delivery origin explicit so
 // the same images continue to work when the built site is hosted on another domain.
 export const ASSET_ORIGIN = "https://ikigonyi.lovable.app";
