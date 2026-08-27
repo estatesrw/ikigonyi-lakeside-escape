@@ -100,7 +100,7 @@ const FAQS = [
   },
   {
     q: "How many guests can Ikigonyi Round House host?",
-    a: "The property sleeps up to twelve guests across six bedrooms in two lakefront houses, with six bathrooms, a full kitchen and a panoramic thatched terrace.",
+    a: "The property sleeps up to twelve guests across six bedrooms in the lakefront house and its modern annexe, with six bathrooms, a full kitchen and a panoramic thatched terrace. The whole property is US$250 per night.",
   },
   {
     q: "What can you do at Lake Muhazi?",
