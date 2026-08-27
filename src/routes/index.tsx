@@ -172,7 +172,8 @@ function HomePage() {
     photos.realLakeSteps,
     photos.realBedroomWoven,
     photos.realExteriorDriveway,
-    photos.realLakeBoat,
+    photos.realBoat,
+    photos.annexeDay,
     photos.realBedroomTwinWarm,
     photos.realLampImigongo,
     photos.realShowerWarm,
@@ -227,28 +228,90 @@ function HomePage() {
         <div>
           <p className="eyebrow">The retreat</p>
           <h2 className="display mt-4 text-4xl leading-tight md:text-5xl">
-            {content?.["intro_headline"] ?? "A private retreat by the lake."}
+            {content?.["intro_headline"] ?? "Lakefront house with annexe, one private retreat"}
           </h2>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-            Two lakefront houses on the shores of Lake Muhazi, built in traditional African style
-            with a spectacular handcrafted thatched roof.
+            {content?.["intro_body_1"] ??
+              "Lakefront house on the shores of Lake Muhazi, built in traditional African style with a spectacular handcrafted thatched roof. Modern annexe with additional rooms."}
           </p>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Local stone, handcrafted wood and thatch, a panoramic terrace, bright living rooms and an
-            open kitchen — perfect for families, friends, retreats and wellness stays.
+            {content?.["intro_body_2"] ??
+              "Local stone, handcrafted wood and thatch, a panoramic terrace, bright living rooms and an open kitchen — perfect for families, friends, retreats and wellness stays."}
           </p>
-          <Button asChild variant="link" className="mt-6 px-0 text-base">
-            <Link to="/about">Read our story →</Link>
-          </Button>
+          <p className="mt-6 inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm">
+            {content?.["rate_note"] ?? "US$250 per night for the whole property, up to 12 guests"}
+          </p>
+          <div>
+            <Button asChild variant="link" className="mt-4 px-0 text-base">
+              <Link to="/about">Read our story →</Link>
+            </Button>
+          </div>
         </div>
-        <img
-          src={photos.living}
-          alt="Bright curved living room with lake views"
-          loading="lazy"
-          width={1280}
-          height={960}
-          className="aspect-4/3 w-full rounded-3xl object-cover shadow-[var(--shadow-soft)]"
-        />
+        <div className="grid gap-4">
+          <img
+            src={photos.landscape}
+            alt="The round house and the modern annexe together above Lake Muhazi"
+            loading="lazy"
+            width={1280}
+            height={960}
+            className="aspect-4/3 w-full rounded-3xl object-cover shadow-[var(--shadow-soft)]"
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <img
+              src={photos.annexeDay}
+              alt="The modern annexe house in daylight"
+              loading="lazy"
+              width={640}
+              height={520}
+              className="aspect-4/3 w-full rounded-2xl object-cover"
+            />
+            <img
+              src={photos.living}
+              alt="Bright curved living room with lake views"
+              loading="lazy"
+              width={640}
+              height={520}
+              className="aspect-4/3 w-full rounded-2xl object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* THE BOAT */}
+      <section className="bg-card">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 md:grid-cols-2 md:px-8">
+          <img
+            src={photos.realBoat}
+            alt="The house boat moored on the shore of Lake Muhazi"
+            loading="lazy"
+            width={1600}
+            height={1000}
+            className="aspect-4/3 w-full rounded-3xl object-cover shadow-[var(--shadow-soft)]"
+          />
+          <div>
+            <p className="eyebrow">On the water</p>
+            <h2 className="display mt-4 text-4xl leading-tight md:text-5xl">
+              Our boat, moored at the bottom of the garden.
+            </h2>
+            <p className="mt-6 text-base leading-relaxed text-muted-foreground">
+              Ikigonyi has its own boat on Lake Muhazi. Head out for sunrise and sunset cruises,
+              fishing, birdwatching along the shoreline or a crossing to a lakeside restaurant —
+              all a few steps down from the terrace.
+            </p>
+            <p className="mt-6 inline-flex rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm">
+              {content?.["boat_price"] ??
+                "Boat outings: price on request — tell us your dates and we will confirm"}
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button asChild className="rounded-full px-6">
+                <Link to="/book">Book with a boat outing</Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-full px-6">
+                <Link to="/experiences">See all experiences</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* THE HOUSE */}
