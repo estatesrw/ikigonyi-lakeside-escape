@@ -56,6 +56,32 @@ function StayPage() {
       />
 
       <section className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="grid gap-4 md:grid-cols-[1.5fr_1fr]">
+          <img
+            src={photos.landscape}
+            alt="The lakefront round house and the modern annexe together above Lake Muhazi"
+            loading="lazy"
+            width={1280}
+            height={960}
+            className="aspect-16/10 w-full rounded-3xl object-cover"
+          />
+          <img
+            src={photos.annexeDay}
+            alt="The modern annexe house in daylight"
+            loading="lazy"
+            width={800}
+            height={640}
+            className="aspect-16/10 w-full rounded-3xl object-cover"
+          />
+        </div>
+        <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted-foreground">
+          Lakefront house on the shores of Lake Muhazi, built in traditional African style with a
+          spectacular handcrafted thatched roof, plus a modern annexe with additional rooms. The
+          whole property is rented as one — US$250 per night for up to twelve guests.
+        </p>
+      </section>
+
+      <section className="mx-auto mt-16 max-w-7xl px-5 md:px-8">
         <img
           src={photos.terrace}
           alt="Panoramic covered terrace overlooking Lake Muhazi"
@@ -105,8 +131,35 @@ function StayPage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-7xl px-5 py-20 md:px-8">
+        <div className="grid items-center gap-12 md:grid-cols-2">
+          <img
+            src={photos.realBoat}
+            alt="The house boat moored on the shore of Lake Muhazi"
+            loading="lazy"
+            width={1600}
+            height={1000}
+            className="aspect-4/3 w-full rounded-3xl object-cover"
+          />
+          <div>
+            <p className="eyebrow">The boat</p>
+            <h2 className="display mt-4 text-3xl md:text-4xl">Straight onto Lake Muhazi.</h2>
+            <p className="mt-6 text-base leading-relaxed text-muted-foreground">
+              Our own boat is moored at the bottom of the garden — sunrise and sunset cruises,
+              fishing, birdwatching along the shoreline or a crossing to a lakeside restaurant.
+            </p>
+            <p className="mt-6 inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm">
+              Boat outings: price on request — tell us your dates and we will confirm
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-5xl px-5 py-20 md:px-8">
         <h2 className="display text-3xl md:text-4xl">Check your dates.</h2>
+        <p className="mt-3 text-sm text-muted-foreground">
+          US$250 per night for the whole property, up to twelve guests.
+        </p>
         <div className="mt-8">
           <BookingSearch />
         </div>

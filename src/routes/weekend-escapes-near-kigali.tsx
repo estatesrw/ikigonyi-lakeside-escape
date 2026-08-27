@@ -20,7 +20,7 @@ const FAQS = [
   },
   {
     q: "Is the villa good for a group weekend from Kigali?",
-    a: "Yes — the property sleeps twelve across six bedrooms in two lakefront houses, with a full kitchen, panoramic terrace and space for gatherings. A private chef, boat rides and lakeside BBQs can be arranged on request.",
+    a: "Yes — the property sleeps twelve across six bedrooms in the lakefront house and its modern annexe, with a full kitchen, panoramic terrace and space for gatherings. A private chef, boat rides and lakeside BBQs can be arranged on request.",
   },
   {
     q: "What does a weekend at Lake Muhazi look like?",

@@ -2,6 +2,7 @@
 import roundHouseExterior from "@/assets/listing/round-house-exterior.jpg.asset.json";
 import roundHouseNight from "@/assets/listing/round-house-night.jpg.asset.json";
 import annexeNight from "@/assets/listing/annexe-night.jpg.asset.json";
+import annexeDay from "@/assets/listing/annexe-day.jpg.asset.json";
 import propertyLandscape from "@/assets/listing/property-landscape.jpg.asset.json";
 import terraceLake from "@/assets/listing/terrace-lake.jpg.asset.json";
 import lakeView from "@/assets/listing/lake-view.jpg.asset.json";
@@ -37,6 +38,7 @@ import pxLampBw from "@/assets/pixieset/lamp-bw.jpg.asset.json";
 import pxBedroomWarm from "@/assets/pixieset/bedroom-warm.jpg.asset.json";
 import pxShowerWarm from "@/assets/pixieset/shower-warm.jpg.asset.json";
 import pxExteriorDriveway from "@/assets/pixieset/exterior-driveway.jpg.asset.json";
+import pxBoatCloseup from "@/assets/pixieset/boat-closeup.jpg.asset.json";
 
 // Lovable Assets use a platform-served path. Keep the delivery origin explicit so
 // the same images continue to work when the built site is hosted on another domain.
@@ -51,6 +53,7 @@ export const photos = {
   exterior: publicMediaUrl(roundHouseExterior.url),
   exteriorNight: publicMediaUrl(roundHouseNight.url),
   annexeNight: publicMediaUrl(annexeNight.url),
+  annexeDay: publicMediaUrl(annexeDay.url),
   landscape: publicMediaUrl(propertyLandscape.url),
   terrace: publicMediaUrl(terraceLake.url),
   lake: publicMediaUrl(lakeView.url),
@@ -74,6 +77,7 @@ export const photos = {
   realTerraceLake: publicMediaUrl(pxTerraceLakeGreen.url),
   realLakeSteps: publicMediaUrl(pxLakeSteps.url),
   realLakeBoat: publicMediaUrl(pxLakeBoatSteps.url),
+  realBoat: publicMediaUrl(pxBoatCloseup.url),
   realLakeBw: publicMediaUrl(pxLakeViewBw.url),
   realLandscapeBw: publicMediaUrl(pxLandscapeBw.url),
   realBedroomCarved: publicMediaUrl(pxBedroomCarved.url),
@@ -101,6 +105,24 @@ export const galleryPhotos: {
   image_url: string;
   alt_text: string;
 }[] = [
+  {
+    id: "p0a",
+    category: "House",
+    image_url: photos.annexeDay,
+    alt_text: "The modern annexe house in daylight, beside the round house",
+  },
+  {
+    id: "p0b",
+    category: "House",
+    image_url: photos.landscape,
+    alt_text: "The round house and the annexe together above Lake Muhazi",
+  },
+  {
+    id: "p0c",
+    category: "Lake",
+    image_url: photos.realBoat,
+    alt_text: "The property's boat moored on the shore of Lake Muhazi",
+  },
   {
     id: "p1",
     category: "House",
