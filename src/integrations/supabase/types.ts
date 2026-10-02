@@ -53,25 +53,31 @@ export type Database = {
         Row: {
           created_at: string
           end_date: string
+          external_uid: string | null
           id: string
           property_id: string
           reason: string | null
+          source_channel_id: string | null
           start_date: string
         }
         Insert: {
           created_at?: string
           end_date: string
+          external_uid?: string | null
           id?: string
           property_id: string
           reason?: string | null
+          source_channel_id?: string | null
           start_date: string
         }
         Update: {
           created_at?: string
           end_date?: string
+          external_uid?: string | null
           id?: string
           property_id?: string
           reason?: string | null
+          source_channel_id?: string | null
           start_date?: string
         }
         Relationships: [
@@ -80,6 +86,13 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blocked_dates_source_channel_id_fkey"
+            columns: ["source_channel_id"]
+            isOneToOne: false
+            referencedRelation: "channels"
             referencedColumns: ["id"]
           },
         ]
