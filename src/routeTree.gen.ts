@@ -35,6 +35,7 @@ import { Route as AuthenticatedDashboardPricingRouteImport } from './routes/_aut
 import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
 import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
+import { Route as ApiPublicIcalChannelIdRouteImport } from './routes/api/public/ical.$channelId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -179,6 +180,11 @@ const AuthenticatedDashboardSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const ApiPublicIcalChannelIdRoute = ApiPublicIcalChannelIdRouteImport.update({
+  id: '/api/public/ical/$channelId',
+  path: '/api/public/ical/$channelId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -206,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/ical/$channelId': typeof ApiPublicIcalChannelIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -232,6 +239,7 @@ export interface FileRoutesByTo {
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/ical/$channelId': typeof ApiPublicIcalChannelIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -261,6 +269,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/api/public/ical/$channelId': typeof ApiPublicIcalChannelIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -290,6 +299,7 @@ export interface FileRouteTypes {
     | '/dashboard/reviews'
     | '/dashboard/settings'
     | '/dashboard/'
+    | '/api/public/ical/$channelId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -316,6 +326,7 @@ export interface FileRouteTypes {
     | '/dashboard/reviews'
     | '/dashboard/settings'
     | '/dashboard'
+    | '/api/public/ical/$channelId'
   id:
     | '__root__'
     | '/'
@@ -344,6 +355,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/reviews'
     | '/_authenticated/dashboard/settings'
     | '/_authenticated/dashboard/'
+    | '/api/public/ical/$channelId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -359,6 +371,7 @@ export interface RootRouteChildren {
   StayRoute: typeof StayRoute
   StaysNearLakeMuhaziRoute: typeof StaysNearLakeMuhaziRoute
   WeekendEscapesNearKigaliRoute: typeof WeekendEscapesNearKigaliRoute
+  ApiPublicIcalChannelIdRoute: typeof ApiPublicIcalChannelIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -545,6 +558,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardSettingsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/api/public/ical/$channelId': {
+      id: '/api/public/ical/$channelId'
+      path: '/api/public/ical/$channelId'
+      fullPath: '/api/public/ical/$channelId'
+      preLoaderRoute: typeof ApiPublicIcalChannelIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -610,6 +630,7 @@ const rootRouteChildren: RootRouteChildren = {
   StayRoute: StayRoute,
   StaysNearLakeMuhaziRoute: StaysNearLakeMuhaziRoute,
   WeekendEscapesNearKigaliRoute: WeekendEscapesNearKigaliRoute,
+  ApiPublicIcalChannelIdRoute: ApiPublicIcalChannelIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
