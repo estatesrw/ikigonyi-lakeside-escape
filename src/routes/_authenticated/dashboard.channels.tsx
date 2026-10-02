@@ -16,6 +16,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Fld, Picker } from "./dashboard.bookings";
+import { useServerFn } from "@tanstack/react-start";
+import { syncChannel } from "@/lib/channels.functions";
+import { ChannelWizard } from "@/components/dashboard/ChannelWizard";
 
 export const Route = createFileRoute("/_authenticated/dashboard/channels")({
   component: ChannelsPage,
@@ -38,6 +41,20 @@ function ChannelsPage() {
   const access = useAccess();
   const qc = useQueryClient();
   const [editing, setEditing] = useState<Channel | null>(null);
+  const [wizard, setWizard] = useState<Channel | null>(null);
+  const syncFn = useServerFn(syncChannel);
+  const refresh = () => {
+    qc.invalidateQueries({ queryKey: ["channels"] });
+    qc.invalidateQueries({ queryKey: ["calendar"] });
+  };
+  const syncNow = useMutation({
+    mutationFn: (channelId: string) => syncFn({ data: { channelId } }),
+    onSuccess: (r) => {
+      toast.success(`Synced — ${r.imported} reservation(s)`);
+      refresh();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ["channels", property?.id],
@@ -102,9 +119,26 @@ function ChannelsPage() {
                 Last sync: {c.last_synced_at ? new Date(c.last_synced_at).toLocaleString() : "never"}
               </p>
               {access.canManage && (
-                <Button variant="outline" size="sm" className="mt-4" onClick={() => setEditing(c)}>
-                  Configure
-                </Button>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {(c.code === "airbnb" || c.code === "booking_com") && (
+                    <Button size="sm" onClick={() => setWizard(c)}>
+                      {c.status === "connected" ? "Reconnect" : "Setup wizard"}
+                    </Button>
+                  )}
+                  {c.ical_import_url && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={syncNow.isPending}
+                      onClick={() => syncNow.mutate(c.id)}
+                    >
+                      Sync now
+                    </Button>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => setEditing(c)}>
+                    Configure
+                  </Button>
+                </div>
               )}
             </div>
           ))}
