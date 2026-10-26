@@ -1,14 +1,15 @@
-import { describe, expect, test } from "bun:test";
+import { describe, test } from "node:test";
+import assert from "node:assert/strict";
 import { validatePasswordChange } from "./password";
 
 describe("password changes", () => {
   test("rejects mismatching passwords", () => {
-    expect(validatePasswordChange("SecureExample42", "DifferentExample42")).not.toBeNull();
+    assert.notEqual(validatePasswordChange("SecureExample42", "DifferentExample42"), null);
   });
   test("rejects a short password", () => {
-    expect(validatePasswordChange("short", "short")).not.toBeNull();
+    assert.notEqual(validatePasswordChange("short", "short"), null);
   });
   test("accepts matching passwords of at least eight characters", () => {
-    expect(validatePasswordChange("SecureExample42", "SecureExample42")).toBeNull();
+    assert.equal(validatePasswordChange("SecureExample42", "SecureExample42"), null);
   });
 });
