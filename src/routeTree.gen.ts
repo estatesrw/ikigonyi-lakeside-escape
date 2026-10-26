@@ -17,10 +17,12 @@ import { Route as BookRouteImport } from './routes/book'
 import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LocationRouteImport } from './routes/location'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StayRouteImport } from './routes/stay'
 import { Route as StaysNearLakeMuhaziRouteImport } from './routes/stays-near-lake-muhazi'
 import { Route as WeekendEscapesNearKigaliRouteImport } from './routes/weekend-escapes-near-kigali'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBookingsRouteImport } from './routes/_authenticated/dashboard.bookings'
@@ -76,6 +78,11 @@ const LocationRoute = LocationRouteImport.update({
   path: '/location',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -97,6 +104,11 @@ const WeekendEscapesNearKigaliRoute =
     path: '/weekend-escapes-near-kigali',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -194,10 +206,12 @@ export interface FileRoutesByFullPath {
   '/experiences': typeof ExperiencesRoute
   '/gallery': typeof GalleryRoute
   '/location': typeof LocationRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
   '/stays-near-lake-muhazi': typeof StaysNearLakeMuhaziRoute
   '/weekend-escapes-near-kigali': typeof WeekendEscapesNearKigaliRoute
+  '/account': typeof AuthenticatedAccountRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
@@ -222,10 +236,12 @@ export interface FileRoutesByTo {
   '/experiences': typeof ExperiencesRoute
   '/gallery': typeof GalleryRoute
   '/location': typeof LocationRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
   '/stays-near-lake-muhazi': typeof StaysNearLakeMuhaziRoute
   '/weekend-escapes-near-kigali': typeof WeekendEscapesNearKigaliRoute
+  '/account': typeof AuthenticatedAccountRoute
   '/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
   '/dashboard/channels': typeof AuthenticatedDashboardChannelsRoute
@@ -251,10 +267,12 @@ export interface FileRoutesById {
   '/experiences': typeof ExperiencesRoute
   '/gallery': typeof GalleryRoute
   '/location': typeof LocationRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stay': typeof StayRoute
   '/stays-near-lake-muhazi': typeof StaysNearLakeMuhaziRoute
   '/weekend-escapes-near-kigali': typeof WeekendEscapesNearKigaliRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/dashboard/bookings': typeof AuthenticatedDashboardBookingsRoute
   '/_authenticated/dashboard/calendar': typeof AuthenticatedDashboardCalendarRoute
@@ -281,10 +299,12 @@ export interface FileRouteTypes {
     | '/experiences'
     | '/gallery'
     | '/location'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/stay'
     | '/stays-near-lake-muhazi'
     | '/weekend-escapes-near-kigali'
+    | '/account'
     | '/dashboard'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
@@ -309,10 +329,12 @@ export interface FileRouteTypes {
     | '/experiences'
     | '/gallery'
     | '/location'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/stay'
     | '/stays-near-lake-muhazi'
     | '/weekend-escapes-near-kigali'
+    | '/account'
     | '/dashboard/bookings'
     | '/dashboard/calendar'
     | '/dashboard/channels'
@@ -337,10 +359,12 @@ export interface FileRouteTypes {
     | '/experiences'
     | '/gallery'
     | '/location'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/stay'
     | '/stays-near-lake-muhazi'
     | '/weekend-escapes-near-kigali'
+    | '/_authenticated/account'
     | '/_authenticated/dashboard'
     | '/_authenticated/dashboard/bookings'
     | '/_authenticated/dashboard/calendar'
@@ -367,6 +391,7 @@ export interface RootRouteChildren {
   ExperiencesRoute: typeof ExperiencesRoute
   GalleryRoute: typeof GalleryRoute
   LocationRoute: typeof LocationRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StayRoute: typeof StayRoute
   StaysNearLakeMuhaziRoute: typeof StaysNearLakeMuhaziRoute
@@ -432,6 +457,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -459,6 +491,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/weekend-escapes-near-kigali'
       preLoaderRoute: typeof WeekendEscapesNearKigaliRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -607,10 +646,12 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
@@ -626,6 +667,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperiencesRoute: ExperiencesRoute,
   GalleryRoute: GalleryRoute,
   LocationRoute: LocationRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StayRoute: StayRoute,
   StaysNearLakeMuhaziRoute: StaysNearLakeMuhaziRoute,
