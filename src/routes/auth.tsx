@@ -17,6 +17,8 @@ export const Route = createFileRoute("/auth")({
       { name: "robots", content: "noindex" },
       { property: "og:title", content: "Manager Login — Ikigonyi Round House" },
       { property: "og:description", content: "Secure sign in for EstatesRW property managers." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AuthPage,
@@ -28,10 +30,26 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [forgot, setForgot] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
+  async function sendReset(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setResetSent(true);
+    } catch (failure) {
+      toast.error(failure instanceof Error ? failure.message : "Could not send the reset email.");
+    } finally { setLoading(false); }
+  }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) navigate({ to: "/dashboard", replace: true });
     });
   }, [navigate]);
 
@@ -50,7 +68,7 @@ function AuthPage() {
   async function signUp(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -63,8 +81,8 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
-    toast.success("Account created. Ask an owner to grant you dashboard access.");
-    navigate({ to: "/dashboard", replace: true });
+    toast.success(data.session ? "Account created. Ask an owner to grant you dashboard access." : "Check your email to confirm your account, then sign in.");
+    if (data.session) navigate({ to: "/dashboard", replace: true });
   }
 
   async function google() {
@@ -97,7 +115,12 @@ function AuthPage() {
           </TabsList>
 
           <TabsContent value="signin">
-            <form className="mt-6 space-y-4" onSubmit={signIn}>
+            {forgot ? <form className="mt-6 space-y-4" onSubmit={sendReset}>
+              <Field id="reset-email" label="Email" type="email" value={email} onChange={setEmail} />
+              {resetSent && <p role="status" className="text-sm text-muted-foreground">If an account exists for this email, you will receive a password reset link.</p>}
+              <Button type="submit" className="w-full" disabled={loading}>{loading ? "Sending…" : "Send reset link"}</Button>
+              <Button type="button" variant="ghost" className="w-full" onClick={() => setForgot(false)}>Back to sign in</Button>
+            </form> : <form className="mt-6 space-y-4" onSubmit={signIn}>
               <Field id="si-email" label="Email" type="email" value={email} onChange={setEmail} />
               <Field
                 id="si-pass"
@@ -109,7 +132,8 @@ function AuthPage() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 size-4 animate-spin" />} Sign in
               </Button>
-            </form>
+              <Button type="button" variant="link" className="w-full" onClick={() => { setForgot(true); setResetSent(false); }}>Forgot password?</Button>
+            </form>}
           </TabsContent>
 
           <TabsContent value="signup">

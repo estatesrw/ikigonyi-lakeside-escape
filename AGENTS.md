@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Account security
+- Keep password changes in the role-independent authenticated account page so all signed-in users can update their own credentials.
+- Share password validation and form logic; signed-in changes send the current password, while public recovery changes require a valid recovery link and omit it.

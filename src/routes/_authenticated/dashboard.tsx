@@ -18,6 +18,7 @@ import {
   Users,
   Inbox,
   BookOpen,
+  KeyRound,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -155,6 +156,9 @@ function DashboardLayout() {
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/75 hover:bg-sidebar-accent"
           >
             <Home className="size-4" /> View website
+          </Link>
+          <Link to="/account" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/75 hover:bg-sidebar-accent">
+            <KeyRound className="size-4" /> Change password
           </Link>
           <button
             onClick={signOut}
