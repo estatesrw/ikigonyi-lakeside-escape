@@ -27,10 +27,17 @@ export function parseIcal(text: string): IcalEvent[] {
     } else if (cur) {
       const idx = line.indexOf(":");
       if (idx < 0) continue;
-      const key = line.slice(0, idx).split(";")[0].toUpperCase();
+      const key = (line.slice(0, idx).split(";")[0] ?? "").toUpperCase();
       const val = line.slice(idx + 1).trim();
-      if (key === "DTSTART") cur.start = toIsoDate(val) ?? undefined;
-      else if (key === "DTEND") cur.end = toIsoDate(val) ?? undefined;
+      if (key === "DTSTART") {
+        const date = toIsoDate(val);
+        if (date) cur.start = date;
+        else delete cur.start;
+      } else if (key === "DTEND") {
+        const date = toIsoDate(val);
+        if (date) cur.end = date;
+        else delete cur.end;
+      }
       else if (key === "UID") cur.uid = val;
       else if (key === "SUMMARY") cur.summary = val;
     }
